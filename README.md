@@ -37,7 +37,7 @@ Backend merupakan RESTful API menggunakan Deno runtime dan Hono, dimana endpoint
 | 19 | Riwayat Retur Produk            | ~5 hari                       |
 | 20 | Penyesuaian Retur Produk        | ~2 hari                       |
 
-**Total estimasi: ~52 hari **
+**Total estimasi: ~52 hari**
 
 Link trello workspace: https://trello.com/invite/b/69c7dab6bf61e74f5d7c379c/ATTI96a4ea8cbe844f2a99a1396beedabf1025E15FAF/sari-tebu-feature-development
 
