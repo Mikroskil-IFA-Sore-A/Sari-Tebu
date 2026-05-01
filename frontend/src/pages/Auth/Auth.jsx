@@ -39,9 +39,9 @@ export default function Auth() {
   };
 
   return (
-    <div className="container-fluid vh-100 position-relative p-0">
+    <div className="auth-page-container position-relative p-0">
       
-      <div className="row h-100 m-0">
+      <div>
         <div className="col-md-7 d-none d-md-block left-side">
         </div>
         <div className="col-md-5 bg-white d-none d-md-block"></div>
