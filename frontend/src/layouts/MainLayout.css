@@ -13,3 +13,7 @@
 .layout-content {
   padding: 20px;
 }
+
+.body {
+  background-color: #f4f7f6 !important;
+}

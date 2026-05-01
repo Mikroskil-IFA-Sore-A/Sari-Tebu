@@ -10,7 +10,7 @@ export default function Sidebar() {
     <div className="sidebar">
 
       <div className="sidebar-header">
-        <h4 className="logo">Setia Abadi</h4>
+        <h4 className="logo">Sari Tebu</h4>
       </div>
 
       <div className="sidebar-menu">

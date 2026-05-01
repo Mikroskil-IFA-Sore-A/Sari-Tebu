@@ -5,7 +5,7 @@ export default function Topbar() {
     <div className="topbar">
 
       <div className="topbar-left">
-        <h5 className="brand">Setia Abadi</h5>
+        <h5 className="brand">Sari Tebu</h5>
       </div>
 
       <div className="topbar-right">
