@@ -48,7 +48,10 @@ export default function Auth() {
         <div className="col-md-5 d-flex align-items-center justify-content-center">
           <div className="auth-card slide-once">
             <div className="auth-tabs mb-4">
-              <div className={`slider ${isLogin ? "login-active" : "register-active"}`}></div>
+              <div 
+                className="auth-slider"
+                style={{ left: isLogin ? "0%" : "50%" }}
+              ></div>
 
               <button
                 className={`tab ${isLogin ? "active" : ""}`}
