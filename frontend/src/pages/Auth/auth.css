@@ -4,7 +4,6 @@
 
 .auth-card {
   width: 100%;
-  max-width: 400px;
 }
 
 .slide-once {
@@ -40,14 +39,6 @@
   border-radius: 10px;
   transition: left 0.3s ease;
   z-index: 0;
-}
-
-.login-active {
-  left: 0;
-}
-
-.register-active {
-  left: 50%;
 }
 
 .tab {
