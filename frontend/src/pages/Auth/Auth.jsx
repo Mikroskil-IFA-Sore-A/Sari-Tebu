@@ -39,77 +39,83 @@ export default function Auth() {
   };
 
   return (
-    <div className="container-fluid vh-100">
-      <div className="row h-100">
-        <div className="col-md-7 d-none d-md-flex left-side align-items-center justify-content-center">
-          <h4 className="fw-bold">Setia Abadi</h4>
+    <div className="container-fluid vh-100 position-relative p-0">
+      
+      <div className="row h-100 m-0">
+        <div className="col-md-7 d-none d-md-block left-side">
         </div>
+        <div className="col-md-5 bg-white d-none d-md-block"></div>
+      </div>
 
-        <div className="col-md-5 d-flex align-items-center justify-content-center">
-          <div className="auth-card slide-once">
-            <div className="auth-tabs mb-4">
-              <div 
-                className="auth-slider"
-                style={{ left: isLogin ? "0%" : "50%" }}
-              ></div>
+      <div 
+        className="position-absolute top-50 start-50 translate-middle w-100 px-3" 
+        style={{ maxWidth: "450px", zIndex: 10 }}
+      >
+        <div className="auth-card slide-once bg-white p-4 p-md-5 shadow-lg" style={{ borderRadius: "20px" }}>
+          
+          <h2 className="fw-bold text-center mb-4">Sari Tebu</h2>
 
-              <button
-                className={`tab ${isLogin ? "active" : ""}`}
-                onClick={() => setIsLogin(true)}
-              >
-                Login
-              </button>
+          <div className="auth-tabs mb-4">
+            <div 
+              className="auth-slider"
+              style={{ left: isLogin ? "0%" : "50%" }}
+            ></div>
 
-              <button
-                className={`tab ${!isLogin ? "active" : ""}`}
-                onClick={() => setIsLogin(false)}
-              >
-                Register
-              </button>
-            </div>
+            <button
+              className={`tab ${isLogin ? "active" : ""}`}
+              onClick={() => setIsLogin(true)}
+            >
+              Login
+            </button>
 
-            <h3 className="fw-bold">
-              {isLogin ? "Selamat Datang" : "Buat Akun"}
-            </h3>
+            <button
+              className={`tab ${!isLogin ? "active" : ""}`}
+              onClick={() => setIsLogin(false)}
+            >
+              Register
+            </button>
+          </div>
 
-            <form onSubmit={handleSubmit}>
-              {!isLogin && (
-                <input
-                  className="form-control mb-3"
-                  placeholder="Nama Lengkap"
-                  onChange={(e) =>
-                    setForm({ ...form, fullname: e.target.value })
-                  }
-                />
-              )}
+          <h3 className="fw-bold text-center mb-4">
+            {isLogin ? "Selamat Datang" : "Buat Akun"}
+          </h3>
 
+          <form onSubmit={handleSubmit}>
+            {!isLogin && (
               <input
                 className="form-control mb-3"
-                placeholder="Username"
+                placeholder="Nama Lengkap"
                 onChange={(e) =>
-                  setForm({ ...form, username: e.target.value })
+                  setForm({ ...form, fullname: e.target.value })
                 }
               />
+            )}
 
-              <input
-                type="password"
-                className="form-control mb-4"
-                placeholder="Password"
-                onChange={(e) =>
-                  setForm({ ...form, password: e.target.value })
-                }
-              />
+            <input
+              className="form-control mb-3"
+              placeholder="Username"
+              onChange={(e) =>
+                setForm({ ...form, username: e.target.value })
+              }
+            />
 
-              <button className="btn btn-primary w-100">
-                {isLogin ? "Masuk" : "Daftar"}
-              </button>
+            <input
+              type="password"
+              className="form-control mb-4"
+              placeholder="Password"
+              onChange={(e) =>
+                setForm({ ...form, password: e.target.value })
+              }
+            />
 
-            </form>
+            <button className="btn btn-primary w-100">
+              {isLogin ? "Masuk" : "Daftar"}
+            </button>
 
-          </div>
+          </form>
         </div>
-
       </div>
+
     </div>
   );
 }
