@@ -3,6 +3,7 @@ import { loginApi, registerApi } from "../../api/authAPI";
 import { saveToken } from "../../utils/storage";
 import { useNavigate } from "react-router-dom";
 import "./auth.css";
+import logo from "./Logo sari tebu.svg";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -53,7 +54,10 @@ export default function Auth() {
       >
         <div className="auth-card slide-once bg-white p-4 p-md-5 shadow-lg" style={{ borderRadius: "20px" }}>
           
-          <h2 className="fw-bold text-center mb-4">Sari Tebu</h2>
+          <div className="d-flex justify-content-center align-items-center mb-4">
+            <img src={logo} alt="Logo" width="50" height="50" className="me-2" />
+            <h2 className="fw-bold m-0" style={{ color: "#1b5e20" }}>Sari Tebu</h2>
+          </div>
 
           <div className="auth-tabs mb-4">
             <div 
