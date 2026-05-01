@@ -13,7 +13,6 @@ export const up = (pgm) => {
     pgm.createTable("authentications", {
         refresh_token: {
             type: "TEXT",
-            primaryKey: true,
         },
     });
 };
