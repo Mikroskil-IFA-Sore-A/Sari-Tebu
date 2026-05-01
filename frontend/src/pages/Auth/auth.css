@@ -30,15 +30,15 @@
   overflow: hidden;
 }
 
-.slider {
+.auth-slider {
   position: absolute;
   top: 0;
   left: 0;
   width: 50%;
   height: 100%;
-  background: #5b7fff;
+  background: #5b7fff !important;
   border-radius: 10px;
-  transition: all 0.3s ease;
+  transition: left 0.3s ease;
   z-index: 0;
 }
 
