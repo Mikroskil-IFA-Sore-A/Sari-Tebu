@@ -16,9 +16,6 @@ export default function Topbar({ toggleSidebar }) {
           </svg>
         </button>
 
-        <h5 className="brand" style={{ margin: 0, fontWeight: 'bold', color: '#1b5e20', fontSize: '1.2rem' }}>
-          Sari Tebu
-        </h5>
       </div>
 
       <div className="topbar-right">
