@@ -24,4 +24,10 @@ export const menuItems = [
       { name: "Laporan Sesi Kasir", path: "/cashier-report" },
     ],
   },
+  {
+    title: "Produk",
+    items: [
+      { name: "Produk", path: "/products"}
+    ]
+  }
 ];

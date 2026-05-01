@@ -1,8 +1,9 @@
+import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar/Topbar";
 import "./MainLayout.css";
 
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   return (
     <div className="layout">
 
@@ -12,7 +13,7 @@ export default function MainLayout({ children }) {
         <Topbar />
 
         <div className="layout-content">
-          {children}
+          <Outlet />
         </div>
       </div>
 
