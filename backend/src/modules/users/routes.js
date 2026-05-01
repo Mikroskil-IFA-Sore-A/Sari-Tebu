@@ -6,6 +6,6 @@ import { createuserchema } from "./schema.js";
 
 const routes = Router();
 
-routes.post("/user", validatePayload(createuserchema), createUser);
+routes.post("/users", validatePayload(createuserchema), createUser);
 
 export default routes;

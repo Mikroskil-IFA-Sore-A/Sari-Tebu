@@ -12,32 +12,36 @@ export default function Auth() {
     username: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
 
-    if (isLogin) {
-      const res = await loginApi(form);
-
-      if (res.status === "success") {
-        saveToken(res.data);
-        navigate("/dashboard");
-      } else {
-        alert("Login gagal");
-      }
-    } else {
-      const res = await registerApi(form);
-
-      if (res.status === "success") {
-        alert("Register berhasil");
-        setIsLogin(true);
-      } else {
-        alert("Register gagal");
-      }
-    }
-  };
+        try {
+            if (isLogin) {
+                const res = await loginApi(form);
+                if (res.status === "success") {
+                    saveToken(res.data);
+                    navigate("/dashboard");
+                } else {
+                    alert("Login gagal: " + (res.message || ""));
+                }
+            } else {
+                const res = await registerApi(form);
+                if (res.status === "success") {
+                    alert("Register berhasil");
+                    setIsLogin(true);
+                } else {
+                    alert("Register gagal: " + (res.message || ""));
+                }
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
 
   return (
     <div className="auth-page-container position-relative p-0">
@@ -80,10 +84,6 @@ export default function Auth() {
             </button>
           </div>
 
-          <h3 className="fw-bold text-center mb-4">
-            {isLogin ? "Selamat Datang" : "Buat Akun"}
-          </h3>
-
           <form onSubmit={handleSubmit}>
             {!isLogin && (
               <input
@@ -112,8 +112,8 @@ export default function Auth() {
               }
             />
 
-            <button className="btn btn-primary w-100">
-              {isLogin ? "Masuk" : "Daftar"}
+            <button className="btn btn-primary w-100" disabled={loading}>
+                {loading ? "Memproses..." : isLogin ? "Masuk" : "Daftar"}
             </button>
 
           </form>

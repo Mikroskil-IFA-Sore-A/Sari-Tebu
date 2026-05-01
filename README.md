@@ -12,6 +12,10 @@ Backend merupakan RESTful API menggunakan Deno runtime dan Hono, dimana endpoint
 <!-- TODO: Tambah detail mengenai deployment 
  -->
 
+```pwsh
+.\run.cmd
+```
+
 <!-- NOTE: Tambahkan sumber-sumber lainnya yang terkait dengan proyek disini 
  -->
 ## Kredit 

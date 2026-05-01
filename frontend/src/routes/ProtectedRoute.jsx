@@ -1,11 +1,6 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet } from 'react-router-dom';
+import { isLoggedIn } from '../utils/storage';
 
 export default function ProtectedRoute() {
-  const token = localStorage.getItem("accessToken");
-
-  if (!token) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <Outlet />;
+    return isLoggedIn() ? <Outlet /> : <Navigate to="/auth" replace />;
 }

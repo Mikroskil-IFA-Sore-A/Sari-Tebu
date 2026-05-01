@@ -42,7 +42,7 @@ class UserRepository {
         // average time O(n/2) => O(n)
         // optimal nya, buat index (b-tree) agar average time O(log n)
         const pq = {
-            text: `SELECT * FROM users WHERE username = $1 LIMIT 1`,
+            text: `SELECT * FROM users WHERE username ILIKE $1 LIMIT 1`,
             values: [username],
         };
         const { rows } = await pool.query(pq);

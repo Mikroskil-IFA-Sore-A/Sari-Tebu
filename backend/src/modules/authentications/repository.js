@@ -3,7 +3,7 @@ import pool from "../../shared/database/index.js";
 class authenticationsRepository {
     async addRefreshToken(refreshToken) {
         const pq = {
-            text: `INSERT INTO authenticationss VALUES ($1)`,
+            text: `INSERT INTO authentications VALUES ($1)`,
             values: [refreshToken],
         };
         await pool.query(pq);
@@ -11,7 +11,7 @@ class authenticationsRepository {
 
     async verifyRefreshToken(refreshToken) {
         const pq = {
-            text: `SELECT refresh_token FROM authenticationss WHERE refresh_token = $1`,
+            text: `SELECT refresh_token FROM authentications WHERE refresh_token = $1`,
             values: [refreshToken],
         };
 
@@ -21,7 +21,7 @@ class authenticationsRepository {
 
     async deleteRefreshToken(refreshToken) {
         const pq = {
-            text: `DELETE FROM authenticationss WHERE refresh_token = $1`,
+            text: `DELETE FROM authentications WHERE refresh_token = $1`,
             values: [refreshToken],
         };
         const { rowCount } = await pool.query(pq);

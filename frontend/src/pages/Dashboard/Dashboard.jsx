@@ -58,26 +58,6 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="col-md-6">
-          <div className="card-box">
-            <h5>Hutang Supplier</h5>
-
-            <div className="table-box mt-3">
-              <div className="table-header">
-                <span>Nama Supplier</span>
-                <span>Total</span>
-              </div>
-
-              {data.suppliersDebt.map((item, i) => (
-                <div key={i} className="table-row">
-                  <span className="link">{item.name}</span>
-                  <span>Rp {item.total}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
       </div>
 
       <div className="card-box mt-4">
