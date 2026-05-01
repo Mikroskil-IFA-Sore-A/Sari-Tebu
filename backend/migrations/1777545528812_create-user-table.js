@@ -9,12 +9,12 @@ export const shorthands = undefined;
  * @returns {Promise<void> | void}
  */
 export const up = (pgm) => {
-    pgm.createTable("users", {
+    pgm.createTable("userss", {
         id: {
             type: "VARCHAR(32)",
             primaryKey: true,
         },
-        username: {
+        usersname: {
             type: "TEXT",
             notNull: true,
             unique: true,
@@ -44,5 +44,5 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-    pgm.dropTable("users");
+    pgm.dropTable("userss");
 };

@@ -9,12 +9,12 @@ import { validatePayload } from "../../shared/middlewares/validate_middleware.js
 
 const routes = Router();
 
-routes.post("/authentication", validatePayload(createAuthSchema), login);
+routes.post("/authentications", validatePayload(createAuthSchema), login);
 routes.put(
-    "/authentication",
+    "/authentications",
     validatePayload(renewAccessTokenSchema),
     refreshAccessToken,
 );
-routes.delete("/authentication", validatePayload(deleteAuthSchema), logout);
+routes.delete("/authentications", validatePayload(deleteAuthSchema), logout);
 
 export default routes;
