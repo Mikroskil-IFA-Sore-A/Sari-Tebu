@@ -6,6 +6,7 @@ import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
 import Products from "./pages/Products/Products";
 import CreateProduct from "./pages/Products/CreateProduct";
+import Cart from "./pages/cart/Cart";
 
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -27,7 +28,7 @@ function App() {
                     <Route path="/users/create" element={<CreateUser />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/create" element={<CreateProduct />} />
-                    
+                    <Route path="/carts" element={<Cart />} />
                 </Route>
             </Route>
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
