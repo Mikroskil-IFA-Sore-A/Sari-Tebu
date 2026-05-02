@@ -28,8 +28,8 @@ export const up = (pgm) => {
             default: 0
         }, 
         created_at: {
-            type: "TEXT",
-            notNull: true,
+            type: "TIMESTAMP",
+            default: pgm.func("NOW()")
         }
     });
 };

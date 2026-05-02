@@ -19,7 +19,7 @@ export function validateQuery(schema) {
         const { value, error } = schema.validate(req.query);
         if (error) throw error;
 
-        res.locals.query = value;
+        res.validatedQuery = value;
         next();
     };
 }
