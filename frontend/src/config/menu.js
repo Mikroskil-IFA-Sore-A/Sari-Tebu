@@ -10,7 +10,7 @@ export const menuItems = [
     items: [
       { name: "Users", path: "/users" },
       { name: "Produk", path: "/produk" },
-      { name: "Diskon", path: "/diskon" },
+      { name: "Transaksi", path: "/transaksi" }
     ],
   },
   {
