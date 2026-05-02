@@ -6,7 +6,7 @@ export const getUsers = async ({ search = "", status = "" }) => {
         status,
     }).toString();
 
-    const res = await fetch(`${process.env.API_URL}/users?${query}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/users?${query}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -18,7 +18,7 @@ export const getUsers = async ({ search = "", status = "" }) => {
 export const createUser = async (data) => {
     const token = localStorage.getItem("accessToken");
 
-    const res = await fetch(`${process.env.API_URL}/users`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
         method: "POST",
         headers: {
         "Content-Type": "application/json",
