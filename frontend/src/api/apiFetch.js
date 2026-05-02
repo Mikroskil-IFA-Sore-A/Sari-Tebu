@@ -15,7 +15,7 @@ export async function apiFetch(url, options = {}) {
 
   let res = await makeRequest(token);
 
-  if (res.status === 401) {
+  if (res.status === 401 || res.status === 400) {
     try {
       const refreshToken = localStorage.getItem('refreshToken');
       const data = await refreshTokenApi(refreshToken);

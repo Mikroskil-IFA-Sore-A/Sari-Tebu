@@ -6,8 +6,9 @@ import Users from "./pages/Users/Users";
 import CreateUser from "./pages/Users/CreateUser";
 import Products from "./pages/Products/Products";
 import CreateProduct from "./pages/Products/CreateProduct";
-import Cart from "./pages/cart/Cart";
-
+import Cart from "./pages/Cart/Cart";
+import EditProduct from "./pages/Products/EditProduct";
+import Transactions from "./pages/Transactions/Transactions";
 import MainLayout from "./layouts/MainLayout";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { isLoggedIn } from './utils/storage';
@@ -28,7 +29,9 @@ function App() {
                     <Route path="/users/create" element={<CreateUser />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/create" element={<CreateProduct />} />
+                    <Route path="/products/edit/:id" element={<EditProduct />} />
                     <Route path="/carts" element={<Cart />} />
+                    <Route path="/transactions" element={<Transactions />} />
                 </Route>
             </Route>
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

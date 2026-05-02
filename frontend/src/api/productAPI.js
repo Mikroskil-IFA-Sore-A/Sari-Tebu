@@ -29,3 +29,8 @@ export const deleteProduct = async (id) => {
     });
     return res.json();
 };
+
+export const getProductById = async (id) => {
+    const res = await apiFetch(`${BASE}/products/${id}`);
+    return res.json();
+};
