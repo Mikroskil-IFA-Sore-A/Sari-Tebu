@@ -10,7 +10,7 @@ export const shorthands = undefined;
  */
 export const up = (pgm) => {
     // buat jadi primary key, karena authenticationss table supposed to behave sebagai set
-    pgm.createTable("authenticationss", {
+    pgm.createTable("authentications", {
         refresh_token: {
             type: "TEXT",
         },
@@ -23,5 +23,5 @@ export const up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 export const down = (pgm) => {
-    pgm.dropTable("authenticationss");
+    pgm.dropTable("authentications");
 };
