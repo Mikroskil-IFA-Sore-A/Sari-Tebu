@@ -23,8 +23,7 @@ export const up = (pgm) => {
         product_id: { type: 'VARCHAR(32)', notNull: true },
         product_name: { type: 'TEXT', notNull: true },
         product_price: { type: 'INTEGER', notNull: true },    
-        discount: { type: 'INTEGER', default: 0 },            
-        final_price: { type: 'INTEGER', notNull: true },
+        discount: { type: 'INTEGER', default: 0 },
         quantity: { type: 'INTEGER', notNull: true },
         subtotal: { type: 'INTEGER', notNull: true },
     });

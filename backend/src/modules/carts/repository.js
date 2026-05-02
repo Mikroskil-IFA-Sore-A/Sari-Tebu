@@ -6,7 +6,7 @@ class CartRepository {
         const { rows } = await pool.query({
             text: `
                 SELECT ci.id, ci.quantity, ci.added_at,
-                       p.id as product_id, p.name, p.price, p.discount, p.stock,
+                       p.id as product_id, p.name, p.price, p.stock
                 FROM carts ci
                 JOIN products p ON ci.product_id = p.id
                 ORDER BY ci.added_at ASC
@@ -49,7 +49,7 @@ class CartRepository {
 
     async removeItem(id) {
         const { rowCount } = await pool.query({
-            text: `DELETE FROM cart_items WHERE id=$1`, 
+            text: `DELETE FROM carts WHERE id=$1`, 
             values: [id]
         });
         return rowCount > 0;

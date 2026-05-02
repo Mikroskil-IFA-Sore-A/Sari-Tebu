@@ -20,7 +20,7 @@ class TransactionRepository {
             for (const item of items) {
                 const itemId = `trx-item-${nanoid()}`;
                 await client.query(
-                    `INSERT INTO transaction_items 
+                    `INSERT INTO transactions_items 
            (id, transaction_id, product_id, product_name, product_price, quantity, subtotal)
            VALUES ($1, $2, $3, $4, $5, $6, $7)`,
                     [
@@ -39,7 +39,7 @@ class TransactionRepository {
                 );
             }
 
-            await client.query(`DELETE FROM cart_items`);
+            await client.query(`DELETE FROM carts`);
             await client.query('COMMIT');
             return transaction;
         } catch (err) {
@@ -66,7 +66,7 @@ class TransactionRepository {
         if (!transaction) return null;
 
         const { rows: items } = await pool.query({
-            text: `SELECT * FROM transaction_items WHERE transaction_id = $1`, 
+            text: `SELECT * FROM transactions_items WHERE transaction_id = $1`, 
             values: [id]
         });
         return { ...transaction, items };

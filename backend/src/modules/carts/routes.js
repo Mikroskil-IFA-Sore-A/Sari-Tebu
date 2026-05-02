@@ -6,10 +6,10 @@ import { addCartSchema, updateCartSchema } from "./schema.js";
 
 const routes = Router();
 
-routes.get('/cart', authMiddleware, getCart);
-routes.post('/cart', authMiddleware, validatePayload(addCartSchema), addToCart);
-routes.put('/cart/:id', authMiddleware, validatePayload(updateCartSchema), updateCartItem);
-routes.delete('/cart/:id', authMiddleware, removeFromCart);
-routes.delete('/cart', authMiddleware, clearCart);
+routes.get('/carts', authMiddleware, getCart);
+routes.post('/carts', authMiddleware, validatePayload(addCartSchema), addToCart);
+routes.put('/carts/:id', authMiddleware, validatePayload(updateCartSchema), updateCartItem);
+routes.delete('/carts/:id', authMiddleware, removeFromCart);
+routes.delete('/carts', authMiddleware, clearCart);
 
 export default routes;

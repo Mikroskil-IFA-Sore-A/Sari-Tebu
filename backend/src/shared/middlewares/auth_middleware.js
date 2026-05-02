@@ -4,7 +4,7 @@ import * as TokenManager from "../security/token_manager.js";
 export default function authMiddleware(req, _res, next) {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-        throw ClientError.unauthorized("missing token");
+        throw ClientError.unauthorized("Bad Access Token");
     }
 
     const token = authHeader.split(" ")[1];
