@@ -1,5 +1,5 @@
 export async function loginApi({ username, password }) {
-    const res = await fetch(`${process.env.API_URL}/authentications`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/authentications`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
@@ -8,7 +8,7 @@ export async function loginApi({ username, password }) {
 }
 
 export async function registerApi({ fullname, username, password }) {
-    const res = await fetch(`${process.env.API_URL}/users`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullname, username, password }),
@@ -21,7 +21,7 @@ export async function registerApi({ fullname, username, password }) {
 }
 
 export async function refreshTokenApi(refreshToken) {
-    const res = await fetch(`${process.env.API_URL}/authentications`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/authentications`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken }),
@@ -30,7 +30,7 @@ export async function refreshTokenApi(refreshToken) {
 }
 
 export async function logoutApi(refreshToken) {
-    const res = await fetch(`${process.env.API_URL}/authentications`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/authentications`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ refreshToken }),

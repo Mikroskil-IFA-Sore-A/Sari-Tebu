@@ -14,7 +14,7 @@ export const up = (pgm) => {
             type: "VARCHAR(32)",
             primaryKey: true,
         },
-        usersname: {
+        username: {
             type: "TEXT",
             notNull: true,
             unique: true,

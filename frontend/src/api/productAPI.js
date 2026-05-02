@@ -7,7 +7,7 @@ export const getProducts = async ({ search = "", status = "", loss = false }) =>
         loss,
     }).toString();
 
-    const res = await fetch(`${process.env.API_URL}/products?${query}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/products?${query}`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -19,7 +19,7 @@ export const getProducts = async ({ search = "", status = "", loss = false }) =>
 export const createProduct = async (formData) => {
     const token = localStorage.getItem("accessToken");
 
-    const res = await fetch(`${process.env.API_URL}/products`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/products`, {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
