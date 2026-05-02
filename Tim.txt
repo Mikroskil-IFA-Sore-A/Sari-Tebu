@@ -1,0 +1,25 @@
+Nama Tim: Kelompok A
+
+| NIM       | Nama Anggota           |
+|:----------|:-----------------------|
+| 241110083 | Aelberth Cheong        |
+| 241110910 | Fendy                  |
+| 24111     | Sean Ryo Valens Sahala |
+| 241112555 | Vincent                |
+| 24111     | Vincent Lim            |
+
+Teknologi yang kami gunakan:
+* Frontend:
+  - React
+  - React Router
+  - Bootstrap
+* Backend:
+  - express
+  - postgresql
+  - node-pg-migrate
+  - jsonwebtoken (JWT)
+  - joi
+  - bcrypt
+
+Kredit (website-website yang kami pakai sebagai referensi/inspirasi)
+https://skripsi-setia-abadi.vercel.app (username: super.admin.one, password: 123456)

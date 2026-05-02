@@ -7,11 +7,15 @@
 Sari Tebu merupakan aplikasi POS (point of sale) berbasis web. Frontend akan di render client-side (CSR) dikarenakan 
 ini merupakan aplikasi dashboard, dimana SEO (Search Engine Optimization) tidak berperan penting. Disini kami menggunakan framwork React.
 
-Backend merupakan RESTful API menggunakan Deno runtime dan Hono, dimana endpoint-endpoint tsb merupakan SSoT (Single Source of Truth) kami dan mengikuti spec OpenApi proyek kami. 
+Backend merupakan API menggunakan Node runtime dan Express Framework
 
 <!-- TODO: Tambah detail mengenai deployment 
  -->
 
+Instruksi untuk backend [readme.md](./backend/readme.md) <br />
+Instruksi untuk frontend [readme.md](./frontend/readme.md)
+
+Untuk menjalankan program, tolong ketikan perintah dibawah ini pada terminal pilihan anda
 ```pwsh
 .\run.cmd
 ```
