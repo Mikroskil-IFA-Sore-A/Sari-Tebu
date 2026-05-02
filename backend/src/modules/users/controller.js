@@ -22,3 +22,22 @@ export async function createUser(req, res) {
         },
     });
 }
+
+export async function getUsers(req, res) {
+    const users = await UserRepository.getAll();
+    res.status(200).json({
+        status: "success",
+        data: { users }
+    });
+}
+
+export async function deleteUser(req, res) {
+    const ok = await UserRepository.deleteUser(req.params.id);
+    if (!ok) {
+        throw ClientError.notFound();
+    }
+    res.status(200).json({
+        status: "success",
+        message: "User deleted"
+    });
+}

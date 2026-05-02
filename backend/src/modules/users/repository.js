@@ -48,6 +48,22 @@ class UserRepository {
         const { rows } = await pool.query(pq);
         return rows[0];
     }
+
+    async getAll() {
+        const { rows } = await pool.query({
+            text: `SELECT id, username, fullname, created_at FROM users ORDER BY created_at DESC`,
+            values: []
+        });
+        return rows;
+    }
+
+    async deleteUser(id) {
+        const { rowCount } = await pool.query({
+            text: `DELETE FROM users WHERE id = $1`,
+            values: [id]
+        })
+        return rowCount > 0;
+    }
 }
 
 export default new UserRepository();
