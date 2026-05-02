@@ -1,12 +1,8 @@
-export const getUsers = async ({ search = "", status = "" }) => {
+import { apiFetch } from "./apiFetch";
+
+export const getUsers = async () => {
     const token = localStorage.getItem("accessToken");
-
-    const query = new URLSearchParams({
-        search,
-        status,
-    }).toString();
-
-    const res = await fetch(`${process.env.API_URL}/users?${query}`, {
+    const res = await apiFetch(`${process.env.REACT_APP_API_URL}/users`, {
         headers: {
             Authorization: `Bearer ${token}`,
         },
@@ -15,17 +11,11 @@ export const getUsers = async ({ search = "", status = "" }) => {
     return res.json();
 };
 
-export const createUser = async (data) => {
+export const deleteUser = async (id) => {
     const token = localStorage.getItem("accessToken");
-
-    const res = await fetch(`${process.env.API_URL}/users`, {
-        method: "POST",
-        headers: {
-        "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(data),
+    const res = await apiFetch(`${process.env.REACT_APP_API_URL}/users/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
     });
-
     return res.json();
 };

@@ -49,10 +49,12 @@ class UserRepository {
         return rows[0];
     }
 
-    async getAll() {
+    async getAll({ search = "" } = {}) {
         const { rows } = await pool.query({
-            text: `SELECT id, username, fullname, created_at FROM users ORDER BY created_at DESC`,
-            values: []
+            text: `SELECT id, username, fullname, created_at FROM users
+                   WHERE username ILIKE $1 OR fullname ILIKE $1
+                   ORDER BY created_at DESC`,
+            values: [`%${search}%`]
         });
         return rows;
     }

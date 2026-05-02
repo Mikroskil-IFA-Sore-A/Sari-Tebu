@@ -27,6 +27,7 @@ function App() {
                     <Route path="/users/create" element={<CreateUser />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/create" element={<CreateProduct />} />
+                    
                 </Route>
             </Route>
             <Route path="*" element={<Navigate to="/dashboard" replace />} />

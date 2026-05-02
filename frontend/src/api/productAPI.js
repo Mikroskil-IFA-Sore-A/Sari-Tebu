@@ -1,31 +1,31 @@
-export const getProducts = async ({ search = "", status = "", loss = false }) => {
-    const token = localStorage.getItem("accessToken");
+import { apiFetch } from './apiFetch';
 
-    const query = new URLSearchParams({
-        search,
-        status,
-        loss,
-    }).toString();
+const BASE = process.env.REACT_APP_API_URL;
 
-    const res = await fetch(`${process.env.API_URL}/products?${query}`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
-
+export const getProducts = async () => {
+    const res = await apiFetch(`${BASE}/products`);
     return res.json();
 };
 
-export const createProduct = async (formData) => {
-    const token = localStorage.getItem("accessToken");
-
-    const res = await fetch(`${process.env.API_URL}/products`, {
-        method: "POST",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-        body: formData,
+export const createProduct = async (data) => {
+    const res = await apiFetch(`${BASE}/products`, {
+        method: 'POST',
+        body: JSON.stringify(data),
     });
+    return res.json();
+};
 
+export const updateProduct = async (id, data) => {
+    const res = await apiFetch(`${BASE}/products/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    });
+    return res.json();
+};
+
+export const deleteProduct = async (id) => {
+    const res = await apiFetch(`${BASE}/products/${id}`, {
+        method: 'DELETE',
+    });
     return res.json();
 };

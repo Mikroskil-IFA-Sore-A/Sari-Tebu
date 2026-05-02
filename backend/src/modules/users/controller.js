@@ -24,7 +24,8 @@ export async function createUser(req, res) {
 }
 
 export async function getUsers(req, res) {
-    const users = await UserRepository.getAll();
+    const { search = '' } = req.query;
+    const users = await UserRepository.getAll({ search });
     res.status(200).json({
         status: "success",
         data: { users }

@@ -1,178 +1,95 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { getProducts } from "../../api/productAPI";
-import "./Products.css";
+import { getProducts, deleteProduct } from "../../api/productAPI";
 
 export default function Products() {
   const navigate = useNavigate();
-  const filterRef = useRef();
-
   const [products, setProducts] = useState([]);
-  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const [showFilter, setShowFilter] = useState(false);
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [lossOnly, setLossOnly] = useState(false);
-
-  const [tempStatus, setTempStatus] = useState("all");
-  const [tempLoss, setTempLoss] = useState(false);
-
-  useEffect(() => {
-    const delay = setTimeout(async () => {
-      setLoading(true);
-
-      try {
-        const res = await getProducts({
-          search,
-          status: statusFilter === "all" ? "" : statusFilter,
-          loss: lossOnly,
-        });
-
-        setProducts(res?.data || []);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    }, 500);
-
-    return () => clearTimeout(delay);
-  }, [search, statusFilter, lossOnly]);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (filterRef.current && !filterRef.current.contains(e.target)) {
-        setShowFilter(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await getProducts();
+      setProducts(res?.data?.products || []);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  return (
-    <div className="products-page">
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
 
-      <div className="products-header">
+  const handleDelete = async (id) => {
+    if (!window.confirm("Hapus produk ini?")) return;
+    await deleteProduct(id);
+    fetchProducts();
+  };
+
+  return (
+    <div className="users-page">
+      <div className="users-header">
         <h4>Daftar Produk</h4>
-        <p>Beranda • Produk</p>
       </div>
 
       <div className="card-box mt-3">
-
-        <div className="products-actions">
-
-          <input
-            className="search-input"
-            placeholder="Cari Produk"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-
-          <button
-            className="btn btn-light"
-            onClick={() => setShowFilter(!showFilter)}
-          >
-            Filter
-          </button>
-
+        <div className="users-actions">
           <button
             className="btn btn-primary ms-auto"
             onClick={() => navigate("/products/create")}
           >
             + Tambah Produk
           </button>
-
-          {showFilter && (
-            <div ref={filterRef} className="filter-box animate">
-
-              <h6>Filter</h6>
-
-              <p>Status</p>
-              <div className="filter-radio">
-
-                <label className={tempStatus === "all" ? "active" : ""}>
-                  <input
-                    type="radio"
-                    checked={tempStatus === "all"}
-                    onChange={() => setTempStatus("all")}
-                  />
-                  Semua
-                </label>
-
-                <label className={tempStatus === "active" ? "active" : ""}>
-                  <input
-                    type="radio"
-                    checked={tempStatus === "active"}
-                    onChange={() => setTempStatus("active")}
-                  />
-                  Aktif
-                </label>
-
-                <label className={tempStatus === "inactive" ? "active" : ""}>
-                  <input
-                    type="radio"
-                    checked={tempStatus === "inactive"}
-                    onChange={() => setTempStatus("inactive")}
-                  />
-                  Tidak Aktif
-                </label>
-
-              </div>
-
-              <p className="mt-2">Jual Rugi</p>
-              <label className="switch">
-                <input
-                  type="checkbox"
-                  checked={tempLoss}
-                  onChange={() => setTempLoss(!tempLoss)}
-                />
-                <span className="slider"></span>
-              </label>
-
-              <div className="filter-actions">
-                <button
-                  className="btn btn-light"
-                  onClick={() => {
-                    setTempStatus("all");
-                    setTempLoss(false);
-                  }}
-                >
-                  Reset
-                </button>
-
-                <button
-                  className="btn btn-primary"
-                  onClick={() => {
-                    setStatusFilter(tempStatus);
-                    setLossOnly(tempLoss);
-                    setShowFilter(false);
-                  }}
-                >
-                  Terapkan
-                </button>
-              </div>
-
-            </div>
-          )}
-
         </div>
 
         {loading ? (
           <div className="text-center mt-4">Loading...</div>
+        ) : products.length === 0 ? (
+          <div className="text-center mt-4 text-muted">Data tidak ditemukan</div>
         ) : (
           <table className="table mt-3">
+            <thead>
+              <tr>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Stok</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
             <tbody>
-              {products.map((p) => (
-                <tr key={p.id}>
-                  <td>{p.name}</td>
-                </tr>
-              ))}
+              {products.map((product) => {
+                return (
+                  <tr key={product.id}>
+                    <td>{product.name}</td>
+                    <td>Rp {Number(product.price).toLocaleString('id-ID')}</td>
+                    <td>
+                      <span style={{ color: product.stock <= 5 ? 'red' : 'inherit' }}>
+                        {product.stock}
+                      </span>
+                    </td>
+                    <td style={{ display: 'flex', gap: '8px' }}>
+                      <button
+                        className="btn-action"
+                        onClick={() => navigate(`/products/edit/${product.id}`)}
+                      >
+                        ...
+                      </button>
+                      <button
+                        className="btn-action"
+                        onClick={() => handleDelete(product.id)}
+                      >
+                        X
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}
-
       </div>
     </div>
   );

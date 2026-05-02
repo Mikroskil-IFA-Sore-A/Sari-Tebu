@@ -9,8 +9,8 @@ export const menuItems = [
     title: "RESOURCE",
     items: [
       { name: "Users", path: "/users" },
-      { name: "Produk", path: "/produk" },
-      { name: "Transaksi", path: "/transaksi" }
+      { name: "Produk", path: "/products" },
+      { name: "Transaksi", path: "/transactions" }
     ],
   },
   {

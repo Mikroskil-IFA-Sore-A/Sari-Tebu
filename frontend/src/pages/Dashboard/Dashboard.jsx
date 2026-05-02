@@ -31,35 +31,6 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-content">
-
-      <div className="row g-3">
-
-        <div className="col-md-6">
-          <div className="card-box">
-            <h5>Hutang Pelanggan</h5>
-
-            <div className="table-box mt-3">
-              <div className="table-header">
-                <span>Nama Pelanggan</span>
-                <span>Total</span>
-              </div>
-
-              {data.customersDebt.length === 0 ? (
-                <div className="table-empty">Data tidak ditemukan</div>
-              ) : (
-                data.customersDebt.map((item, i) => (
-                  <div key={i} className="table-row">
-                    <span>{item.name}</span>
-                    <span>Rp {item.total}</span>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-
-      </div>
-
       <div className="card-box mt-4">
         <h5>Ringkasan Transaksi</h5>
 
