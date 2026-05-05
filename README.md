@@ -13,7 +13,8 @@ Backend merupakan API menggunakan Node runtime dan Express Framework
  -->
 
 Instruksi untuk backend [readme.md](./backend/readme.md) <br />
-Instruksi untuk frontend [readme.md](./frontend/readme.md)
+Instruksi untuk frontend [readme.md](./frontend/readme.md) <br />
+Video demo proyek [Video demo proyek] (https://drive.google.com/file/d/1D9WIMK-e33bKClgW-uAOfCWOIG8EgrH2/view?usp=drivesdk)
 
 Untuk menjalankan program, tolong ketikan perintah dibawah ini pada terminal pilihan anda
 ```pwsh
