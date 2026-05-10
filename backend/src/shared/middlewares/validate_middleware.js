@@ -5,7 +5,9 @@
 
 export function validatePayload(schema) {
     return function (req, res, next) {
-        const { value, error } = schema.validate(req.body);
+        // pastikan jika req.query itu undefined passed in empty object,
+        // karena joi akan menganggap undefined sebagai resource yabg valid
+        const { value, error } = schema.validate(req.body ?? {});
         if (error) throw error;
 
         req.body = value;
@@ -15,10 +17,12 @@ export function validatePayload(schema) {
 
 export function validateQuery(schema) {
     return function (req, res, next) {
-        // properti query bersifat read only pada Express 5
-        const { value, error } = schema.validate(req.query);
+        // pastikan jika req.query itu undefined passed in empty object,
+        // karena joi akan menganggap undefined sebagai resource yabg valid
+        const { value, error } = schema.validate(req.query ?? {});
         if (error) throw error;
 
+        // properti query bersifat read only pada Express 5
         req.validatedQuery = value;
         next();
     };

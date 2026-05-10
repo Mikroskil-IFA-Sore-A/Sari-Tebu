@@ -1,25 +1,26 @@
 import ClientError from "../exceptions/client_error.js";
 
-export default function errorMiddleware(err, _req, res, _next) {
-    // handle client error
+export default function(err, req, res, next) {
     if (err instanceof ClientError) {
-        return res.status(err.statusCode).json({
+        res.status(err.statusCode).json({
+            status : "fail",
+            message: err.message
+        });
+        return;
+    }
+
+    if (err.isJoi) {
+        res.status(400).json({
             status: "fail",
             message: err.message,
         });
+        return;
     }
 
-    // handle Joi validation error
-    if (err.isJoi) {
-        return res.status(400).json({
-            status: "fail",
-            message: err.details[0].message,
-        });
-    }
-
-    // untuk error lainnya, kirimkan respons 500
-    return res.status(err.status || 500).json({
+    res.status(err.status || 500).json({
         status: "error",
-        message: err.message || "Internal Server Error",
+        message: process.env.NODE_ENV !== "production" && err.message 
+            ? err.message 
+            : "Internal Server Error"
     });
 }
