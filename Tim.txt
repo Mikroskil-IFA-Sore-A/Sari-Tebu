@@ -15,8 +15,8 @@ Teknologi yang kami gunakan:
   - Bootstrap
 * Backend:
   - express
-  - postgresql
-  - node-pg-migrate
+  - Mysql
+  - prisma
   - jsonwebtoken (JWT)
   - joi
   - bcrypt

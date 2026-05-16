@@ -1,16 +1,31 @@
 {
+    "author": { 
+        "name" : "Universitas Mikroskil IF-A Sore Kelompok A",
+        "url": "https://github.com/Mikroskil-IFA-Sore-A"
+    },
+    "contributors": [
+        "Aelberth Cheong",
+        "Sean Ryo Valens Sahala",
+        "Fendy",
+        "Vincent Lim",
+        "Vincent"
+    ],
+    "license": "MIT",
     "private": true,
     "type": "module",
     "scripts": {
-        "setup":    "npm install && npx prisma generate",
-        "setup:db": "npm run migrate:deploy && npx prisma db seed",
+        "setup":      "npm install && npx prisma generate",
+        "setup:db":   "npm run migrate:deploy && npx prisma db seed",
+        "setup:test": "npm install -g postman",
         
         "start": "cross-env NODE_ENV=production node ./src/main.js",
         "dev":   "cross-env nodemon ./src/main.js",
+        "test":  "npx postman collection run ./test/collection",
 
         "migrate:create": "npx prisma migrate dev --name",
         "migrate:deploy": "npx prisma migrate deploy",
         "migrate:reset":  "npx prisma migrate reset",
+        "migrate:seed":   "npx prisma db seed",
 
         "lint":     "oxlint",
         "lint:fix": "oxlint --fix",
