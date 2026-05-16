@@ -5,17 +5,13 @@ import { login, logout, refreshAccessToken } from "./controller.js";
 import {
     createAuthSchema,
     renewAccessTokenSchema,
-    deleteAuthSchema,
+    logoutAuthSchema,
 } from "./schema.js";
 
 const routes = Router();
 
-routes.post("/authentications", validatePayload(createAuthSchema), login);
-routes.put(
-    "/authentications",
-    validatePayload(renewAccessTokenSchema),
-    refreshAccessToken,
-);
-routes.delete("/authentications", validatePayload(deleteAuthSchema), logout);
+routes.post("/", validatePayload(createAuthSchema), login);
+routes.post("/logout", validatePayload(logoutAuthSchema), logout);
+routes.put("/", validatePayload(renewAccessTokenSchema), refreshAccessToken);
 
 export default routes;

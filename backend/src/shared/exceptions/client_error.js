@@ -28,4 +28,8 @@ export default class ClientError extends Error {
     static conflict(message = "Conflict") {
         return new ClientError(message, 409);
     }
+
+    static unsupportedMediaType(message = "Unsupported Media Type") {
+        return new ClientError(message, 415);
+    }
 }

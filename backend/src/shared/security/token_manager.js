@@ -1,5 +1,7 @@
-import jwt from "jsonwebtoken";
 import process from "node:process";
+
+import jwt from "jsonwebtoken";
+
 import ClientError from "../exceptions/client_error.js";
 
 export function generateAccessToken(payload) {
@@ -19,7 +21,7 @@ export function verifyAccessToken(accessToken) {
         const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
         return decoded;
     } catch {
-        throw ClientError.badRequest("Bad Access Token");
+        throw ClientError.unauthorized("Bad Access Token");
     }
 }
 
@@ -28,6 +30,6 @@ export function verifyRefreshToken(refreshToken) {
         const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
         return decoded;
     } catch {
-        throw ClientError.badRequest("Bad Refresh Token");
+        throw ClientError.unauthorized("Bad Refresh Token");
     }
 }

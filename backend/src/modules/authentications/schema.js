@@ -9,6 +9,6 @@ export const renewAccessTokenSchema = Joi.object({
     refreshToken: Joi.string().required(),
 });
 
-export const deleteAuthSchema = Joi.object({
+export const logoutAuthSchema = Joi.object({
     refreshToken: Joi.string().required(),
 });

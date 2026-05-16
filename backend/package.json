@@ -2,12 +2,20 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "setup":    "npm install && npx prisma generate",
+        "setup:db": "npm run migrate:deploy && npx prisma db seed",
+        
         "start": "cross-env NODE_ENV=production node ./src/main.js",
-        "dev": "cross-env nodemon ./src/main.js",
-        "migrate": "node-pg-migrate",
-        "lint": "oxlint",
+        "dev":   "cross-env nodemon ./src/main.js",
+
+        "migrate:create": "npx prisma migrate dev --name",
+        "migrate:deploy": "npx prisma migrate deploy",
+        "migrate:reset":  "npx prisma migrate reset",
+
+        "lint":     "oxlint",
         "lint:fix": "oxlint --fix",
-        "fmt": "oxfmt",
+
+        "fmt":       "oxfmt",
         "fmt:check": "oxfmt --check"
     },
     "devDependencies": {

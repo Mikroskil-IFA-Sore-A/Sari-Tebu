@@ -1,13 +1,14 @@
-/**
- * pada Express 5, error yang di throw akan lgsg di propogate ke Error Middleware
- * sehingga kita bisa lgsg throw error tanpa diwajibkan untuk manually pass ke next()
- */
+import ClientError from "../exceptions/client_error.js";
 
 export function validatePayload(schema) {
     return function (req, res, next) {
-        // pastikan jika req.query itu undefined passed in empty object,
-        // karena joi akan menganggap undefined sebagai resource yabg valid
-        const { value, error } = schema.validate(req.body ?? {});
+
+        // Pastikan request body hanya dapat berupa `application/json` MIME Type
+        if (!req.is("application/json")) {
+            throw ClientError.unsupportedMediaType("Content-Type must be application/json"); 
+        }
+
+        const { value, error } = schema.validate(req.body);
         if (error) throw error;
 
         req.body = value;
@@ -17,9 +18,7 @@ export function validatePayload(schema) {
 
 export function validateQuery(schema) {
     return function (req, res, next) {
-        // pastikan jika req.query itu undefined passed in empty object,
-        // karena joi akan menganggap undefined sebagai resource yabg valid
-        const { value, error } = schema.validate(req.query ?? {});
+        const { value, error } = schema.validate(req.query);
         if (error) throw error;
 
         // properti query bersifat read only pada Express 5

@@ -13,19 +13,18 @@ const app = express();
 
 app.use(
     cors({
-        origin: process.env.CORS_ALLOWED_ORIGINS,
+        origin: process.env.CORS_ALLOWED_ORIGINS?.split(","),
     }),
 );
-app.use(express.json());
-app.use(reqlog());
+app.use(express.json({ limit: '250kb' }));                       // agar dapat parse `Content-Type: application/json`
+app.use(express.urlencoded({ extended: true, limit: '250kb' })); // agar dapat parse `Content-Type: application/x-www-form-urlencoded`
+app.use(reqlog({ pretty: true }));
 
-app.use("/", [
-    usersRoutes,
-    authenticationsRoutes,
-    productRoutes,
-    cartsRoutes,
-    transactionsRoutes,
-]);
+app.use("/api/users", usersRoutes);
+app.use("/api/authentications", authenticationsRoutes);
+app.use("/api/products", productRoutes);
+app.use("/api/carts", cartsRoutes);
+app.use("/api/transactions", transactionsRoutes);
 
 // NOTE: Error middleware harus berada pada urutan terakhir
 app.use(errorMiddleware);

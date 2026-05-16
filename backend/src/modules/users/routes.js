@@ -7,9 +7,9 @@ import { createUserSchema } from "./schema.js";
 
 const routes = Router();
 
-routes.post("/users", validatePayload(createUserSchema), createUser);
-routes.get("/users", authMiddleware, getUsers);
-routes.get("/users/:id", authMiddleware, getUserById);
-routes.delete("/users/:id", authMiddleware, deleteUser);
+routes.post("/", validatePayload(createUserSchema), createUser);
+routes.get("/", authMiddleware, getUsers);
+routes.get("/:id", authMiddleware, getUserById);
+routes.delete("/:id", authMiddleware, deleteUser);
 
 export default routes;

@@ -1,51 +1,69 @@
 import ClientError from "../../shared/exceptions/client_error.js";
-import ProductRepository from "../products/repository.js";
 import CartRepository from "./repository.js";
 
-export async function getCart(req, res) {
-    const items = await CartRepository.getItems();
-    const total = items.reduce((sum, item) => {
-        return sum + item.price * item.quantity;
-    }, 0);
-    res.status(200).json({ status: "success", data: { items, total } });
+// async function verifyCartOwner(cart_id, user_id) {
+//     const cart = await CartRepository.getCartById(cart_id);
+//     if (!cart) {
+//         throw ClientError.notFound();
+//     }
+
+//     if (cart.user_id !== user_id) {
+//         throw ClientError.forbidden();
+//     }
+
+//     return cart;
+// }
+
+export async function getItemFromCart(req, res) {
+    const items = await CartRepository.getItemFromCart(req.params.id);
+    if (!items) {
+        throw ClientError.notFound();
+    }
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            items,
+        },
+    });
 }
 
-export async function addToCart(req, res) {
-    const { product_id, quantity = 1 } = req.body;
-    const product = await ProductRepository.getById(product_id);
-    if (!product) {
-        throw ClientError.notFound("Product not found");
-    }
-    if (product.stock < quantity) {
-        throw ClientError.badRequest("Insufficient stock");
-    }
-
-    const item = await CartRepository.addItem(product_id, quantity);
-    res.status(201).json({ status: "success", data: { item } });
-}
-
-export async function updateCartItem(req, res) {
+export async function upsertCartItem(req, res) {
     const { quantity } = req.body;
-    if (quantity < 1) {
-        throw ClientError.badRequest("Quantity must be at least 1");
-    }
+    const { product_id } = req.params;
+    const cartId = await CartRepository.findOrCreate(req.user.sub);
+    await CartRepository.upsertCartItem(cartId, product_id, quantity);
 
-    const item = await CartRepository.updateQuantity(req.params.id, quantity);
-    if (!item) {
-        throw ClientError.notFound("Cart item not found");
-    }
-    res.status(200).json({ status: "success", data: { item } });
+    res.status(200).json({
+        status: "suceess",
+        message: "Cart updated",
+    });
 }
 
-export async function removeFromCart(req, res) {
-    const ok = await CartRepository.removeItem(req.params.id);
-    if (!ok) {
-        throw ClientError.notFound("Cart item not found");
+export async function removeItemFromCart(req, res) {
+    try {
+        await CartRepository.removeItemFromCart(req.params.id);
+        res.status(200).json({
+            status: "success",
+            messsage: "item pada cart tsb berhasil dihapus",
+        });
+    } catch (err) {
+        if (err.code === "P2025")
+            throw ClientError.notFound("cart tidak ditemukan");
+        throw err;
     }
-    res.status(200).json({ status: "success", message: "Item removed" });
 }
 
-export async function clearCart(req, res) {
-    await CartRepository.clearCart();
-    res.status(200).json({ status: "success", message: "Cart cleared" });
+export async function deleteCart(req, res) {
+    try {
+        await CartRepository.deleteCart(req.user.sub);
+        res.status(200).json({
+            status: "success",
+            message: "cart berhasil dihapus",
+        });
+    } catch (err) {
+        if (err.code === "P2025")
+            throw ClientError.notFound("cart tidak ditemukan");
+        throw err;
+    }
 }

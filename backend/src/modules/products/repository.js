@@ -1,5 +1,6 @@
-import { prisma } from "../../shared/database/index.js";
 import { nanoid } from "nanoid";
+
+import { prisma } from "../../shared/database/index.js";
 
 class ProductRepository {
     async getAll() {

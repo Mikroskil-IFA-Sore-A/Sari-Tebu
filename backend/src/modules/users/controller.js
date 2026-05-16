@@ -3,9 +3,8 @@ import UserRepository from "./repository.js";
 
 export async function createUser(req, res) {
     const { username, password, fullname } = req.body;
-
-    const exists = await UserRepository.getByUsername(username);
-    if (exists) {
+    const user = await UserRepository.getByUsername(username);
+    if (user) {
         throw ClientError.conflict("Username unavailable");
     }
 
@@ -31,7 +30,7 @@ export async function getUsers(req, res) {
 }
 
 export async function getUserById(req, res) {
-    const user = await UserRepository.getById(req.body.id);
+    const user = await UserRepository.getById(req.params.id);
     if (!user) {
         throw ClientError.notFound();
     }
@@ -43,13 +42,15 @@ export async function getUserById(req, res) {
 }
 
 export async function deleteUser(req, res) {
-    const deleted = await UserRepository.deleteUser(req.params.id);
-    if (!deleted) {
-        throw ClientError.notFound();
+    try {
+        const deleted = await UserRepository.deleteUser(req.params.id);
+        res.status(200).json({
+            status: "success",
+            message: `User ${deleted.username} telah dihapus`,
+        });
+    } catch (err) {
+        if (err.code === "P2025")
+            throw ClientError.notFound("user tidak ditemukan");
+        throw err;
     }
-
-    res.status(200).json({
-        status: "success",
-        message: "User telah dihapus",
-    });
 }

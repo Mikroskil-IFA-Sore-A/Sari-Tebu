@@ -7,13 +7,8 @@ import { checkoutSchema } from "./schema.js";
 
 const routes = Router();
 
-routes.post(
-    "/transactions",
-    authMiddleware,
-    validatePayload(checkoutSchema),
-    checkout,
-);
-routes.get("/transactions", authMiddleware, getTransactions);
-routes.get("/transactions/:id", authMiddleware, getTransaction);
+routes.post("/", authMiddleware, validatePayload(checkoutSchema), checkout);
+routes.get("/", authMiddleware, getTransactions);
+routes.get("/:id", authMiddleware, getTransaction);
 
 export default routes;
