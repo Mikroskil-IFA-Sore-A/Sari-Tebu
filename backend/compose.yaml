@@ -1,0 +1,55 @@
+name: sari_tebu_backend
+services:
+    database:
+        image: mysql:8.4
+        container_name: mysql8.4
+        restart: always
+        env_file:
+            - .env.prod
+        environment:
+            MYSQL_DATABASE: ${DATABASE_NAME}
+            MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+            MYSQL_USER: ${DATABASE_USER}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        ports:
+            - "${DATABASE_PORT}:3306"
+        networks:
+            - sari_tebu_backend_network
+        volumes:
+            - mysql_data:/var/lib/mysql
+        healthcheck:
+            test:
+                [
+                    "CMD",
+                    "mysqladmin",
+                    "ping",
+                    "-h",
+                    "localhost",
+                    "-u",
+                    "root",
+                    "-p${MYSQL_ROOT_PASSWORD}",
+                ]
+            timeout: 20s
+            retries: 10
+
+    server:
+        container_name: server
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - "${PORT}:8080"
+        depends_on:
+            database:
+                condition: service_healthy
+        env_file:
+            - .env.prod
+        networks:
+            - sari_tebu_backend_network
+
+volumes:
+    mysql_data:
+
+networks:
+    sari_tebu_backend_network:
+        name: sari_tebu_backend_network

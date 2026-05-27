@@ -14,6 +14,7 @@ function Get-Images {
     "https://cdn.simpleicons.org/express",
     "https://cdn.simpleicons.org/mysql",
     "https://cdn.simpleicons.org/prisma",
+    "https://cdn.simpleicons.org/prisma"
 ) | % { 
     $content = Get-Images -Link $_ 
 }

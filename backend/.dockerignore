@@ -1,0 +1,14 @@
+node_modules
+assets
+generated
+docs
+.git
+.gitignore
+.env
+.env.prod
+.env.example
+.vscode
+.oxlintrc.json
+.oxfmtrc.json
+LICENSE
+*.md
