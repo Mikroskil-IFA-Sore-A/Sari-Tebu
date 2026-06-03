@@ -1,7 +1,21 @@
 import Joi from "joi";
 
 export const createUserSchema = Joi.object({
-    username: Joi.string().required(),
-    password: Joi.string().required(),
-    fullname: Joi.string().required(),
+    email_address: Joi.string().email().max(255).required(),
+    username: Joi.string().min(3).max(50).required(),
+    password: Joi.string().min(8).max(100).required(),
 });
+
+export const searchUserSchema = Joi.object({
+    email_address: Joi.string().email().optional(),
+});
+
+export const updateUserSchema = Joi.object({
+    email_address: Joi.string().email().max(255).required(),
+    username: Joi.string().min(3).max(50).required(),
+});
+
+export const editUserSchema = Joi.object({
+    email_address: Joi.string().email().max(255).optional(),
+    username: Joi.string().min(3).max(50).optional(),
+}).min(1);

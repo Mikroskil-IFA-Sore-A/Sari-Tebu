@@ -15,19 +15,14 @@
     "type": "module",
     "scripts": {
         "setup": "npm install && npm run db:deploy && npx prisma generate",
-
         "prod": "node --env-file=.env.prod ./src/main.js",
         "dev": "nodemon --env-file=.env ./src/main.js",
-
         "db:create": "npx prisma migrate dev --name",
         "db:reset": "npx prisma migrate reset",
         "db:seed": "npx prisma db seed",
-
         "db:deploy": "npx prisma migrate deploy && npx prisma generate",
-
         "lint": "oxlint",
         "lint:fix": "oxlint --fix",
-
         "fmt": "oxfmt",
         "fmt:check": "oxfmt --check"
     },
@@ -49,8 +44,12 @@
         "cors": "^2.8.6",
         "dotenv": "^17.3.1",
         "express": "^5.2.1",
+        "helmet": "^8.2.0",
         "joi": "^18.0.2",
         "jsonwebtoken": "^9.0.3",
         "nanoid": "^5.1.6"
+    },
+    "imports": {
+        "#/*": "./src/*"
     }
 }

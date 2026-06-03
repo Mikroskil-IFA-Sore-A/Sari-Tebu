@@ -1,6 +1,9 @@
 generator client {
-    provider = "prisma-client-js"
-    output   = "./generated"
+    provider = "prisma-client"          // Required
+    output   = "./generated/prisma"     // Required (letakkan generated/ relasi terhadap schema.prisma)
+
+    importFileExtension = "ts"          // Setting importFileExtension = "ts" ensures the generated imports match what tsx expects
+                                        // Berdasarkan `https://www.prisma.io/docs/orm/prisma-schema/overview/generators#field-reference`
 }
 
 datasource db {
@@ -8,30 +11,102 @@ datasource db {
 }
 
 model User {
-    id           String        @id @db.VarChar(32)
-    username     String        @unique
-    password     String
-    fullname     String
-    created_at   DateTime      @default(now())
-    carts        Cart[]
-    transactions Transaction[]
-    Auths        Auth[]
+    id            String        @id @db.VarChar(32)
+    email_address String        @unique
+    username      String
+    password_hash String        @db.VarChar(255)
+    created_at    DateTime      @default(now())
+    updated_at    DateTime      @updatedAt
+    
+    carts                   Cart[]
+    transactions            Transaction[]
+    auth_sessions           AuthSession[]
+    // password_reset_sessions PasswordResetSession[]
 
     @@map("users")
 }
 
-model Auth {
-    refresh_token String @id @db.VarChar(512)
-    user_id       String @db.VarChar(32)
-    user          User   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+model AuthSession {
+    id              String   @id @db.VarChar(32)
+    user_id         String   @db.VarChar(32)
+    refresh_token   String   @db.VarChar(64)
+    created_at      DateTime @default(now())
+    expires_at      DateTime
+    user            User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
-    @@index([user_id])
-    @@map("authentications")
+    // email_address_update_sessions   EmailAddressUpdateSession[]
+    // password_update_sessions        PasswordUpdateSession[]
+    // account_deletion_sessions       AccountDeletionSession[]
+
+    @@map("auth_sessions")
 }
+
+// model SignupSession {
+//     id                              String   @id @db.VarChar(32)
+//     secret_hash                     String   @db.VarChar(255)
+//     email_address                   String   @db.VarChar(255)
+//     email_address_verification_code String   @db.VarChar(255)
+//     email_address_verified          Boolean  @default(false)
+//     created_at                      DateTime @default(now())
+
+//     @@map("signup_sessions")
+// }
+
+// model EmailAddressUpdateSession {
+//     id                              String      @id @db.VarChar(32)
+//     auth_session_id                 String      @db.VarChar(32)
+//     secret_hash                     String      @db.VarChar(255)
+//     user_identity_verified          Boolean     @default(false)
+//     new_email_address               String?     @db.VarChar(255)
+//     new_email_address_verification_code String? @db.VarChar(255)
+//     created_at                      DateTime    @default(now())
+//     auth_session                    AuthSession @relation(fields: [auth_session_id], references: [id], onDelete: Cascade)
+
+//     @@index([auth_session_id])
+//     @@map("email_address_update_sessions")
+// }
+
+// model PasswordUpdateSession {
+//     id                     String      @id @db.VarChar(32)
+//     auth_session_id        String      @db.VarChar(32)
+//     secret_hash            String      @db.VarChar(255)
+//     user_identity_verified Boolean     @default(false)
+//     created_at             DateTime    @default(now())
+//     auth_session           AuthSession @relation(fields: [auth_session_id], references: [id], onDelete: Cascade)
+
+//     @@index([auth_session_id])
+//     @@map("password_update_sessions")
+// }
+
+// model AccountDeletionSession {
+//     id                     String      @id @db.VarChar(32)
+//     auth_session_id        String      @db.VarChar(32)
+//     secret_hash            String      @db.VarChar(255)
+//     user_identity_verified Boolean     @default(false)
+//     created_at             DateTime    @default(now())
+//     auth_session           AuthSession @relation(fields: [auth_session_id], references: [id], onDelete: Cascade)
+
+//     @@index([auth_session_id])
+//     @@map("account_deletion_sessions")
+// }
+
+// model PasswordResetSession {
+//     id                     String   @id @db.VarChar(32)
+//     user_id                String   @db.VarChar(32)
+//     secret_hash            String   @db.VarChar(255)
+//     email_code_hash        String   @db.VarChar(255)
+//     email_code_salt        String   @db.VarChar(255)
+//     user_identity_verified Boolean  @default(false)
+//     created_at             DateTime @default(now())
+//     user                   User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+//     @@index([user_id])
+//     @@map("password_reset_sessions")
+// }
 
 model Product {
     id                String            @id @db.VarChar(32)
-    name              String
+    name              String            @unique
     price             Int
     stock             Int
     created_at        DateTime          @default(now())
@@ -39,31 +114,30 @@ model Product {
     cart_items        CartItem[]
     transaction_items TransactionItem[]
 
-    @@index([name])
     @@map("products")
 }
 
 model Cart {
     id         String     @id             @db.VarChar(32)
-    user_id    String     @unique         @db.VarChar(32)
+    user_id    String                     @db.VarChar(32)
     created_at DateTime   @default(now())
     updated_at DateTime   @updatedAt
     items      CartItem[]
     user       User       @relation(fields: [user_id], references: [id])
 
+    @@index([user_id])
     @@map("carts")
 }
 
 model CartItem {
-    id         String  @id @db.VarChar(32)
     cart_id    String  @db.VarChar(32)
     product_id String  @db.VarChar(32)
     quantity   Int
+
     cart       Cart    @relation(fields: [cart_id], references: [id], onDelete: Cascade)
     product    Product @relation(fields: [product_id], references: [id])
 
-    @@index([cart_id])
-    @@index([product_id])
+    @@id([cart_id, product_id])
     @@map("cart_items")
 }
 
@@ -72,6 +146,7 @@ model Transaction {
     user_id    String            @db.VarChar(32)
     total      Int
     created_at DateTime          @default(now())
+    updated_at DateTime          @updatedAt
     items      TransactionItem[]
     user       User              @relation(fields: [user_id], references: [id])
 
@@ -80,7 +155,6 @@ model Transaction {
 }
 
 model TransactionItem {
-    id             String      @id @db.VarChar(32)
     transaction_id String      @db.VarChar(32)
     product_id     String      @db.VarChar(32)
     quantity       Int
@@ -88,7 +162,6 @@ model TransactionItem {
     product        Product     @relation(fields: [product_id], references: [id])
     transaction    Transaction @relation(fields: [transaction_id], references: [id], onDelete: Cascade)
 
-    @@index([transaction_id])
-    @@index([product_id])
+    @@id([transaction_id, product_id])
     @@map("transaction_items")
 }

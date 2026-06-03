@@ -1,56 +1,107 @@
-import ClientError from "../../shared/exceptions/client_error.js";
-import UserRepository from "./repository.js";
+import * as UserService from "./service.js";
 
+/**
+ * @typedef {import('express').Request & {
+ *     validatedBody  : any,
+ *     validatedQuery : any,
+ *     validatedParams: any
+ * }} Request
+ * @typedef {Request & {
+ *     user: {
+ *         sub: string,
+ *         sid: string
+ *     }
+ * }} RequestWithAuth
+ * @typedef {import('express').Response} Response
+ */
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function createUser(req, res) {
-    const { username, password, fullname } = req.body;
-    const user = await UserRepository.getByUsername(username);
-    if (user) {
-        throw ClientError.conflict("Username unavailable");
-    }
-
-    const id = await UserRepository.createUser({
-        username,
-        password,
-        fullname,
-    });
-
+    const user = await UserService.createUser(req.validatedBody);
     res.status(201).json({
         status: "success",
-        data: { id },
+        data: { user },
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function getUsers(req, res) {
-    const { search = "" } = req.query;
-    const users = await UserRepository.getAll({ search });
+    const { email_address } = req.validatedQuery ?? {};
+    const users = await UserService.getUsers(email_address);
     res.status(200).json({
         status: "success",
         data: { users },
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function getUserById(req, res) {
-    const user = await UserRepository.getById(req.params.id);
-    if (!user) {
-        throw ClientError.notFound();
-    }
-
+    const user = await UserService.getUserById(req.validatedParams.id);
     res.status(200).json({
         status: "success",
         data: { user },
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
+export async function updateUser(req, res) {
+    const user = await UserService.updateUser(
+        req.validatedParams.id,
+        req.validatedBody,
+    );
+    res.status(200).json({
+        status: "success",
+        data: { user },
+    });
+}
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
+export async function editUser(req, res) {
+    const user = await UserService.updateUser(
+        req.validatedParams.id,
+        req.validatedBody,
+    );
+    res.status(200).json({
+        status: "success",
+        data: { user },
+    });
+}
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function deleteUser(req, res) {
-    try {
-        const deleted = await UserRepository.deleteUser(req.params.id);
-        res.status(200).json({
-            status: "success",
-            message: `User ${deleted.username} telah dihapus`,
-        });
-    } catch (err) {
-        if (err.code === "P2025")
-            throw ClientError.notFound("user tidak ditemukan");
-        throw err;
-    }
+    await UserService.deleteUser(req.validatedParams.id);
+    res.status(200).json({
+        status: "success",
+        message: "User berhasil dihapus",
+    });
 }

@@ -1,69 +1,74 @@
-import ClientError from "../../shared/exceptions/client_error.js";
-import CartRepository from "./repository.js";
+import * as CartService from "./service.js";
 
-// async function verifyCartOwner(cart_id, user_id) {
-//     const cart = await CartRepository.getCartById(cart_id);
-//     if (!cart) {
-//         throw ClientError.notFound();
-//     }
+/**
+ * @typedef {import('express').Request & {
+ *     validatedBody  : any,
+ *     validatedQuery : any,
+ *     validatedParams: any
+ * }} Request
+ * @typedef {Request & {
+ *     user: {
+ *         sub: string,
+ *         sid: string
+ *     }
+ * }} RequestWithAuth
+ * @typedef {import('express').Response} Response
+ */
 
-//     if (cart.user_id !== user_id) {
-//         throw ClientError.forbidden();
-//     }
-
-//     return cart;
-// }
-
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function getItemFromCart(req, res) {
-    const items = await CartRepository.getItemFromCart(req.params.id);
-    if (!items) {
-        throw ClientError.notFound();
-    }
-
+    const item = await CartService.getItemFromCart(req.validatedParams.id);
     res.status(200).json({
         status: "success",
-        data: {
-            items,
-        },
+        data: { item },
     });
 }
 
+/**
+ * @param {RequestWithAuth} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function upsertCartItem(req, res) {
-    const { quantity } = req.body;
-    const { product_id } = req.params;
-    const cartId = await CartRepository.findOrCreate(req.user.sub);
-    await CartRepository.upsertCartItem(cartId, product_id, quantity);
-
+    const { quantity } = req.validatedBody;
+    const { product_id } = req.validatedParams;
+    await CartService.upsertCartItem(req.user.sub, product_id, quantity);
     res.status(200).json({
-        status: "suceess",
-        message: "Cart updated",
+        status: "success",
+        message: "Cart berhasil diperbarui",
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function removeItemFromCart(req, res) {
-    try {
-        await CartRepository.removeItemFromCart(req.params.id);
-        res.status(200).json({
-            status: "success",
-            messsage: "item pada cart tsb berhasil dihapus",
-        });
-    } catch (err) {
-        if (err.code === "P2025")
-            throw ClientError.notFound("cart tidak ditemukan");
-        throw err;
-    }
+    await CartService.removeItemFromCart(req.validatedParams.id);
+    res.status(200).json({
+        status: "success",
+        message: "Item pada cart berhasil dihapus",
+    });
 }
 
+/**
+ * @param {RequestWithAuth} req
+ * @param {Response} res
+ * @type {import("express").RequestHandler}
+ * @returns {Promise<void>}
+ */
 export async function deleteCart(req, res) {
-    try {
-        await CartRepository.deleteCart(req.user.sub);
-        res.status(200).json({
-            status: "success",
-            message: "cart berhasil dihapus",
-        });
-    } catch (err) {
-        if (err.code === "P2025")
-            throw ClientError.notFound("cart tidak ditemukan");
-        throw err;
-    }
+    await CartService.deleteCart(req.user.sub);
+    res.status(200).json({
+        status: "success",
+        message: "Cart berhasil dihapus",
+    });
 }

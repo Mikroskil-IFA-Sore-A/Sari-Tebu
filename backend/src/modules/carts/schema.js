@@ -5,5 +5,5 @@ export const addItemToCartSchema = Joi.object({
 });
 
 export const updateItemFromCartSchema = Joi.object({
-    quantity: Joi.number().integer().min(1).required(),
+    quantity: Joi.number().integer().min(0).required(),
 });

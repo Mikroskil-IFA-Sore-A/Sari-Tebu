@@ -18,7 +18,7 @@ Backend ini berjalan di atas runtime Node.js dengan framework Express, beserta p
 - **Node.js** v22.12.0 LTS (atau versi v22+ lainnya)
 - **MySQL** v8.4+
 - **Docker** 29+
-- Pastikan telah copy file `.env.example` sebagai `.env`
+- Pastikan telah copy file `.env.example` jadi `.env` dan `.env.prod`
 
 ### Local Development
 

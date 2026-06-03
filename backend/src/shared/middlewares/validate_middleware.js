@@ -1,28 +1,40 @@
-import ClientError from "../exceptions/client_error.js";
-
-export function validatePayload(schema) {
+/**
+ * @param {import("joi").ObjectSchema} schema
+ * @param {string} source
+ * @param {string} target
+ */
+function validate(schema, source, target) {
+    // @ts-ignore
     return function (req, res, next) {
+        const { value, error } = schema.validate(req[source], {
+            abortEarly: false,
+            stripUnknown: true,
+        });
 
-        // Pastikan request body hanya dapat berupa `application/json` MIME Type
-        if (!req.is("application/json")) {
-            throw ClientError.unsupportedMediaType("Content-Type must be application/json"); 
-        }
-
-        const { value, error } = schema.validate(req.body);
         if (error) throw error;
 
-        req.body = value;
+        req[target] = value;
         next();
     };
 }
 
-export function validateQuery(schema) {
-    return function (req, res, next) {
-        const { value, error } = schema.validate(req.query);
-        if (error) throw error;
+/**
+ * @param {import("joi").ObjectSchema} schema
+ */
+export function validatePayload(schema) {
+    return validate(schema, "body", "validatedBody");
+}
 
-        // properti query bersifat read only pada Express 5
-        req.validatedQuery = value;
-        next();
-    };
+/**
+ * @param {import("joi").ObjectSchema} schema
+ */
+export function validateParams(schema) {
+    return validate(schema, "params", "validatedParams");
+}
+
+/**
+ * @param {import("joi").ObjectSchema} schema
+ */
+export function validateQuery(schema) {
+    return validate(schema, "query", "validatedQuery");
 }

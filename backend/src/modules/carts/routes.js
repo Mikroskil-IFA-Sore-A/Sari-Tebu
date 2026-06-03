@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import authMiddleware from "../../shared/middlewares/auth_middleware.js";
+import requireAuth from "../../shared/middlewares/auth_middleware.js";
 import { validatePayload } from "../../shared/middlewares/validate_middleware.js";
 import {
     getItemFromCart,
@@ -12,13 +12,13 @@ import { updateItemFromCartSchema } from "./schema.js";
 
 const routes = Router();
 
-routes.get("/:id", [authMiddleware, getItemFromCart]);
+routes.get("/:id", [requireAuth, getItemFromCart]);
 routes.put("/:product_id", [
-    authMiddleware,
+    requireAuth,
     validatePayload(updateItemFromCartSchema),
     upsertCartItem,
 ]);
-routes.delete("/:id", [authMiddleware, removeItemFromCart]);
-routes.delete("/", [authMiddleware, deleteCart]);
+routes.delete("/:id", [requireAuth, removeItemFromCart]);
+routes.delete("/", [requireAuth, deleteCart]);
 
 export default routes;

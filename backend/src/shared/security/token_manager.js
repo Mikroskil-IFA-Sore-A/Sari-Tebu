@@ -1,23 +1,41 @@
-import process from "node:process";
+import crypto from "crypto";
+import process from "process";
 
 import jwt from "jsonwebtoken";
 
-import ClientError from "../exceptions/client_error.js";
+import ClientError from "#/shared/exceptions/client_error.js";
 
+/** @typedef {{ sub: string, sid: string }} Payload */
+
+/**
+ * generate AccessToken
+ * @param {Payload} payload
+ * @returns {string}
+ */
 export function generateAccessToken(payload) {
     return jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {
         expiresIn: parseInt(process.env.ACCESS_TOKEN_AGE),
     });
 }
 
+/**
+ * generate refreshToken
+ * @param {Payload} payload
+ * @returns {string}
+ */
 export function generateRefreshToken(payload) {
     return jwt.sign(payload, process.env.REFRESH_TOKEN_KEY, {
-        noTimestamp: true,
+        expiresIn: parseInt(process.env.REFRESH_TOKEN_AGE),
     });
 }
 
+/**
+ *
+ * @param {string} accessToken
+ */
 export function verifyAccessToken(accessToken) {
     try {
+        // @ts-ignore
         const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_KEY);
         return decoded;
     } catch {
@@ -25,11 +43,24 @@ export function verifyAccessToken(accessToken) {
     }
 }
 
+/**
+ *
+ * @param {string} refreshToken
+ */
 export function verifyRefreshToken(refreshToken) {
     try {
+        // @ts-ignore
         const decoded = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
         return decoded;
     } catch {
         throw ClientError.unauthorized("Bad Refresh Token");
     }
+}
+
+/**
+ * @param {string} token
+ * @returns
+ */
+export function hashToken(token) {
+    return crypto.createHash("sha256").update(token).digest("hex");
 }

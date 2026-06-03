@@ -1,50 +1,89 @@
-import ClientError from "../../shared/exceptions/client_error.js";
-import ProductRepository from "./repository.js";
+import * as ProductService from "./service.js";
 
+/**
+ * @typedef {import('express').Request & {
+ *   validatedBody?: any,
+ *   validatedQuery?: any,
+ *   validatedParams?: any
+ * }} Request
+ * @typedef {import('express').Response} Response
+ */
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
 export async function getProducts(req, res) {
-    const products = await ProductRepository.getAll();
+    const { name } = req.validatedQuery ?? {};
+    const products = await ProductService.getProducts(name);
     res.status(200).json({
         status: "success",
         data: { products },
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
 export async function getProduct(req, res) {
-    const product = await ProductRepository.getById(req.params.id);
-    if (!product) throw ClientError.notFound();
-
+    const product = await ProductService.getProduct(req.validatedParams.id);
     res.status(200).json({
         status: "success",
         data: { product },
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
 export async function createProduct(req, res) {
-    const product = await ProductRepository.createProduct(req.body);
+    const product = await ProductService.createProduct(req.validatedBody);
     res.status(201).json({
         status: "success",
         data: { product },
     });
 }
 
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
 export async function updateProduct(req, res) {
-    const product = await ProductRepository.updateProduct(
-        req.params.id,
-        req.body,
+    const product = await ProductService.updateProduct(
+        req.validatedParams.id,
+        req.validatedBody,
     );
-    if (!product) throw ClientError.notFound();
-
     res.status(200).json({
         status: "success",
         data: { product },
     });
 }
 
-export async function deleteProduct(req, res) {
-    const ok = await ProductRepository.deleteProduct(req.params.id);
-    if (!ok) throw ClientError.notFound();
-
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
+export async function editProduct(req, res) {
+    const product = await ProductService.updateProduct(
+        req.validatedParams.id,
+        req.validatedBody,
+    );
     res.status(200).json({
         status: "success",
+        data: { product },
+    });
+}
+
+/**
+ * @param {Request} req
+ * @param {Response} res
+ */
+export async function deleteProduct(req, res) {
+    await ProductService.deleteProduct(req.validatedParams.id);
+    res.status(200).json({
+        status: "success",
+        message: "Produk berhasil dihapus",
     });
 }
