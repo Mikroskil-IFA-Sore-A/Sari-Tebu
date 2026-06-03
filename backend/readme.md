@@ -19,35 +19,29 @@ Backend ini berjalan di atas runtime Node.js dengan framework Express, beserta p
 - **MySQL** v8.4+
 - **Docker** 29+
 - Pastikan telah copy file `.env.example` jadi `.env` dan `.env.prod`
+- 
 
 ### Local Development
-
-> [!IMPORTANT]
-> Pastikan untuk *Local Development* telah dibuat kredential yang dibutuhkan mysql
-> Misal: `DATABASE_URL=mysql://admin:admin@localhost:3306/sari_tebu` => `mysql -u root -proot -e "CREATE USER 'admin'@'localhost' IDENTIFIED BY 'admin';"`
-
-1. **Install Dependencies dan generate prisma client**
+1. **Install dependencies dan generate prisma client**
 ```sh
 npm run setup
 ```
 
-2. **Jalankan server development (ataupun production)**
+2. **Build docker container**
 ```sh
-npm run dev    // Development stage atau
-npm run start  // Production stage
+docker compose -f compose.dev.yaml up --build -d
 ```
 
-### Docker
-
+3. **Jalankan server**
 ```sh
-docker compose up --build -d // build image dan container
+npm run dev
 ```
 
 ## Usage
 
 | Command | Usage |
 |:--------|:------|
-| setup      | Menginstal dependencies dan generate Prisma Client |
+| setup   | Menginstal dependencies dan generate Prisma Client |
 | start | menjalankan aplikasi dalam prodcution stage |
 | dev   | menjalankan aplikasi dalam development stage |
 | test  | Menjalankan testing postman collection |
