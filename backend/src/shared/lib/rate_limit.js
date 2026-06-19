@@ -17,7 +17,6 @@ export default class RateLimit {
     }
     
     /**
-     * 
      * @param {string} ip 
      * @returns {boolean}
      */

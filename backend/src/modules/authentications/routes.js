@@ -1,5 +1,6 @@
 import { Router } from "express";
 
+import requireRateLimit from "#/shared/middlewares/rate_limit.js";
 import requireValidation from "#/shared/middlewares/validation.js";
 
 import { login, logout, refreshAccessToken } from "./controller.js";
@@ -11,11 +12,17 @@ import {
 
 const routes = Router();
 
-routes.post("/login", [requireValidation("body", createAuthSchema), login]);
+routes.post("/login", [
+    requireValidation("body", createAuthSchema),
+    requireRateLimit(1000, 5, 2 * 60 * 1000),
+    login,
+]);
+
 routes.post("/refresh", [
     requireValidation("body", renewAccessTokenSchema),
     refreshAccessToken,
 ]);
+
 routes.post("/logout", [requireValidation("body", logoutAuthSchema), logout]);
 
 export default routes;

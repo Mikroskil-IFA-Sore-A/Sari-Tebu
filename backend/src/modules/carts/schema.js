@@ -1,9 +1,12 @@
 import Joi from "joi";
 
-export const addItemToCartSchema = Joi.object({
-    product_id: Joi.string().required(),
+export const addItemSchema = Joi.object({
+    product_id: Joi.string()
+        .pattern(/^product-[A-Za-z0-9_-]{21}$/)
+        .required(),
+    quantity: Joi.number().positive().required(),
 });
 
-export const editItemFromCartSchema = Joi.object({
-    quantity: Joi.number().integer().min(0).required(),
+export const updateItemSchema = Joi.object({
+    quantity: Joi.number().positive().required(),
 });

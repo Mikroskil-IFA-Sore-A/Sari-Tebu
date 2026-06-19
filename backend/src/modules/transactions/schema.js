@@ -1,5 +1,7 @@
 import Joi from "joi";
 
 export const checkoutSchema = Joi.object({
-    cash: Joi.number().integer().min(1).required(),
+    product_id: Joi.string()
+        .pattern(/^transaction-[A-Za-z0-9_-]{21}$/)
+        .required(),
 });

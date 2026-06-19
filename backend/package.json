@@ -29,6 +29,7 @@
         "prisma": "^7.8.0"
     },
     "dependencies": {
+        "@aws-sdk/client-sesv2": "^3.1070.0",
         "@prisma/adapter-mariadb": "^7.8.0",
         "@prisma/client": "^7.8.0",
         "bcrypt": "^6.0.0",

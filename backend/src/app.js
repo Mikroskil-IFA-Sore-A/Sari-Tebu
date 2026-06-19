@@ -2,11 +2,11 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 
-import authRoutes from "#/modules/auth/routes.js";
-import cartsRoutes from "#/modules/carts/routes.js";
+import authenticationRoutes from "#/modules/authentications/routes.js";
+import cartRoutes from "#/modules/carts/routes.js";
 import productRoutes from "#/modules/products/routes.js";
-import transactionsRoutes from "#/modules/transactions/routes.js";
-import usersRoutes from "#/modules/users/routes.js";
+import transactionRoutes from "#/modules/transactions/routes.js";
+import userRoutes from "#/modules/users/routes.js";
 import requireErrorHandler from "#/shared/middlewares/error_handler.js";
 import reqlog from "#/shared/middlewares/reqlog_middleware.js";
 
@@ -25,11 +25,11 @@ app.use(express.json({ limit: "250kb" }));
 app.use(express.urlencoded({ extended: true, limit: "250kb" }));
 app.use(reqlog({ pretty: true }));
 
-app.use("/api/users", usersRoutes);
-app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authenticationRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/carts", cartsRoutes);
-app.use("/api/transactions", transactionsRoutes);
+app.use("/api/carts", cartRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 // NOTE: Error middleware harus berada pada urutan terakhir
 app.use(requireErrorHandler());

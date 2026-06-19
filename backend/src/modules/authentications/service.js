@@ -62,7 +62,6 @@ export async function refreshAccessToken(refreshToken) {
     if (!validSession) throw ClientError.unauthorized();
 
     return TokenManager.generateAccessToken({
-        // @ts-ignore
         sub: decoded.sub,
         sid: decoded.sid,
     });

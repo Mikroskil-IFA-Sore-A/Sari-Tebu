@@ -4,32 +4,36 @@ import requireAuthentication from "#/shared/middlewares/authentication.js";
 import requireValidation from "#/shared/middlewares/validation.js";
 
 import {
-    addItemToCart,
-    editItemFromCart,
-    removeItemFromCart,
-    getItemsFromCart,
+    createCart,
+    listCarts,
+    getCart,
     deleteCart,
+    addItemToCart,
+    updateItem,
+    removeItem,
 } from "./controller.js";
-import { addItemToCartSchema, editItemFromCartSchema } from "./schema.js";
+import { updateItemSchema, addItemSchema } from "./schema.js";
 
 const routes = Router();
 
-routes.post("/items", [
+routes.post("/", [requireAuthentication(), createCart]);
+routes.get("/", [requireAuthentication(), listCarts]);
+routes.get("/:cartId", [requireAuthentication(), getCart]);
+routes.delete("/:cartId", [requireAuthentication(), deleteCart]);
+
+routes.post("/:cartId/items", [
     requireAuthentication(),
-    requireValidation("body", addItemToCartSchema),
+    requireValidation("body", addItemSchema),
     addItemToCart,
 ]);
-routes.patch("/items/:productId", [
+routes.patch("/:cartId/items/:productId", [
     requireAuthentication(),
-    requireValidation("body", editItemFromCartSchema),
-    editItemFromCart,
+    requireValidation("body", updateItemSchema),
+    updateItem,
 ]);
-routes.delete("/items/:productId", [
+routes.delete("/:cartId/items/:productId", [
     requireAuthentication(),
-    removeItemFromCart,
+    removeItem,
 ]);
-
-routes.get("/", [requireAuthentication(), getItemsFromCart]);
-routes.delete("/", [requireAuthentication(), deleteCart]);
 
 export default routes;
