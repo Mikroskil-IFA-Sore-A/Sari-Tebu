@@ -29,6 +29,7 @@ services:
                 condition: service_healthy
 
     caddy:
+        container_name: sari-tebu-caddy
         image: caddy:2.11-alpine
         restart: unless-stopped
         ports:

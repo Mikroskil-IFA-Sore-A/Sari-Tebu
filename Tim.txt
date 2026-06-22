@@ -21,5 +21,7 @@ Teknologi yang kami gunakan:
   - joi
   - bcrypt
 
-Kredit (website-website yang kami pakai sebagai referensi/inspirasi)
+Kredit (resource-resource yang kami pakai sebagai referensi/inspirasi)
 https://skripsi-setia-abadi.vercel.app (username: super.admin.one, password: 123456)
+https://www.youtube.com/watch?v=jFrGhodqC08&t=171s
+https://basic-example.auth.pilcrowonpaper.com
