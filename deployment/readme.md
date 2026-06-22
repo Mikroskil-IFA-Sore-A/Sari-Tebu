@@ -7,5 +7,5 @@ chmod +x deploy.sh deploy-if-changed.sh cd.sh
 dan buat lah cron job, agar production stay up to date dengan HEAD
 ```sh
 cron tab -e
-* * * * * /home/akunsialbert/Projects/Sari-Tebu/deployment/cd.sh
+* * * * * /home/akunsialbert/Projects/Sari-Tebu/deployment/cd.sh # mesti absolute path
 ```
