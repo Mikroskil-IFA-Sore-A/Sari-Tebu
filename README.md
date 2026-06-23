@@ -26,7 +26,8 @@ Untuk menjalankan program, tolong ketikan perintah dibawah ini pada terminal pil
 ## Kredit 
 - https://skripsi-setia-abadi.vercel.app - Dashboard Setia Abadi (merupakan sumber utama proyek ini)
 - https://gitlab.com/groups/setia-abadi  - Source code Setia Abadi
-
+- https://www.youtube.com/watch?v=jFrGhodqC08&t=171s
+- https://basic-example.auth.pilcrowonpaper.com
 
 ## Lisensi
 
