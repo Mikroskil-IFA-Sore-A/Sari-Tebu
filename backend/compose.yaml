@@ -23,19 +23,10 @@ services:
         env_file:
             - .env.prod
         ports:
-            - "${PORT:-8080}:${PORT:-8080}"
+            - "${HOST:-127.0.0.1}:${PORT:-8080}:${PORT:-8080}"
         depends_on:
             database:
                 condition: service_healthy
-
-    caddy:
-        container_name: sari-tebu-caddy
-        image: caddy:2.11-alpine
-        restart: unless-stopped
-        ports:
-            - "80:80"
-        volumes:
-            - ./Caddyfile:/etc/caddy/Caddyfile
 
 volumes:
     mysql_data:
