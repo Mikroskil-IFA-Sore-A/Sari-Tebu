@@ -7,9 +7,9 @@ Sari Tebu merupakan aplikasi POS (*Point of Sale*) berbasis web. Frontend akan d
 
 Backend ini berjalan di atas runtime Node.js dengan framework Express, beserta prisma ORM (*Object Relational Mapper*). Authentikasi dengan Berbasis server-side session token dibantu oleh Bcrypt.
 
-| Node | Express | MySQL | Bcrypt | Prisma | Docker |
-|:----:|:-------:|:-----:|:------:|:------:|:------:|
-| <a href="https://nodejs.org"><img height="128" width="128" src="./assets/node.js.svg" alt="Node.js" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://expressjs.com"><img height="128" width="128" src="./assets/express.svg" alt="Express" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.mysql.com"><img height="128" width="128" src="./assets/mysql.svg" alt="Mysql" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.npmjs.com/package/bcrypt"><img height="128" width="128" src=https://cdn.simpleicons.org/bcrypt alt="Bcrypt" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.prisma.io/"><img height="128" width="128" src="./assets/prisma.svg" alt="Prisma" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.docker.com/"><img height="128" width="128" src="./assets/docker.svg" alt="Docker" style="padding: 5px; border-radius: 4px;" /></a> |
+| Node | Express | MySQL | Prisma | Docker |
+|:----:|:-------:|:-----:|:------:|:------:|
+| <a href="https://nodejs.org"><img height="128" width="128" src="./assets/node.js.svg" alt="Node.js" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://expressjs.com"><img height="128" width="128" src="./assets/express.svg" alt="Express" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.mysql.com"><img height="128" width="128" src="./assets/mysql.svg" alt="Mysql" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.prisma.io/"><img height="128" width="128" src="./assets/prisma.svg" alt="Prisma" style="padding: 5px; border-radius: 4px;" /></a> | <a href="https://www.docker.com/"><img height="128" width="128" src="./assets/docker.svg" alt="Docker" style="padding: 5px; border-radius: 4px;" /></a> |
 
 ## Installation
 
