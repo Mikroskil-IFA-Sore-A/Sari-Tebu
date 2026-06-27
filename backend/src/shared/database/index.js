@@ -6,6 +6,7 @@ const adapter = new PrismaMariaDb({
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
+    allowPublicKeyRetrieval: true
 });
 
 const prisma = new PrismaClient({ adapter });
