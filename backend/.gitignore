@@ -1,5 +1,8 @@
 node_modules/
 generated/
+.vscode/
 .env
 .env.prod
 .env.*
+*.log
+*.lock
