@@ -7,7 +7,8 @@ import requireValidation from "#/shared/middlewares/validation.js";
 import {
     createSignupSession,
     verifyEmailAddress,
-    sendVerificationCode,
+    resendVerificationCode,
+    cancelSignup,
 } from "./controller.js";
 import {
     createSignupSessionSchema,
@@ -24,6 +25,21 @@ const requireSignupSession = requireSession({
 
 const routes = Router();
 
+/**
+ * NOTE:
+ *     POST /
+ *     Buat signUpSession hanya dengan alamat email, jika email sudah ada di authSession
+ *     maka akan gagal, tapi jika ada di signupSession sebelumnya maka replace session itu
+ *     dengan signupSession baru.
+ *
+ *     POST /verify-email-address
+ *     Disini kasih code dari kode verifikasi yang di-dapatkan dari email, dan kita set is_email_verified jadi true
+ *     nanti akan dilanjutkan oleh authSession.
+ *
+ *     POST /resend-verification-code
+ *     Kirim ulang kode verifikasi yang baru.
+ */
+
 routes.post("/", [
     requireValidation("body", createSignupSessionSchema),
     createSignupSession,
@@ -35,10 +51,15 @@ routes.post("/verify-email-address", [
     verifyEmailAddress,
 ]);
 
-routes.post("/send-verification-code", [
+routes.post("/resend-verification-code", [
     requireRateLimit(1000, 5, 5 * 60 * 1000),
     requireSignupSession(),
-    sendVerificationCode,
+    resendVerificationCode,
+]);
+
+routes.delete("/", [
+    requireValidation("body", verifyEmailAddressSchema),
+    cancelSignup,
 ]);
 
 export default routes;

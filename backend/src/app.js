@@ -2,12 +2,14 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
 import helmet from "helmet";
+import morgan from "morgan";
 
 import authenticationRoutes from "#/modules/authentications/routes.js";
 import cartRoutes from "#/modules/carts/routes.js";
 import productRoutes from "#/modules/products/routes.js";
 import transactionRoutes from "#/modules/transactions/routes.js";
 import userRoutes from "#/modules/users/routes.js";
+import signUpRoutes from "#/modules/signup_sessions/routes.js";
 import requireErrorHandler from "#/shared/middlewares/error_handler.js";
 
 const app = express();
@@ -17,6 +19,7 @@ const app = express();
 app.set("trust proxy", process.env.REVERSE_PROXY);
 app.use(cookieParser());
 app.use(helmet());
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(
     cors({
         origin: process.env.CORS_ALLOWED_ORIGINS?.split(",") ?? [],
@@ -25,6 +28,7 @@ app.use(
 app.use(express.json({ limit: "250kb" }));
 app.use(express.urlencoded({ extended: true, limit: "250kb" }));
 
+app.use("/sign-up", signUpRoutes);
 app.use("/users", userRoutes);
 app.use("/auth", authenticationRoutes);
 app.use("/products", productRoutes);

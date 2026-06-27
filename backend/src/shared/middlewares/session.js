@@ -30,20 +30,22 @@ export default function requireSession({
     requestKey,
     findSessionFn,
 }) {
-    return async function (req, res, next) {
-        const token = req.cookies[cookieName];
-        if (!token) throw ClientError.unauthorized();
-
-        const { sessionId, secret } = parseSessionToken(token);
-
-        const session = await findSessionFn(sessionId);
-        if (!session) throw ClientError.unauthorized();
-
-        if (!timingSafeEqual(hashSessionSecret(secret), session.secret_hash)) {
-            throw ClientError.unauthorized();
-        }
-
-        req[requestKey] = session;
-        next();
-    };
+    return function () {  
+        return async function (req, res, next) {
+            const token = req.cookies[cookieName];
+            if (!token) throw ClientError.unauthorized();
+        
+            const { sessionId, secret } = parseSessionToken(token);
+        
+            const session = await findSessionFn(sessionId);
+            if (!session) throw ClientError.unauthorized();
+        
+            if (!timingSafeEqual(hashSessionSecret(secret), session.secret_hash)) {
+                throw ClientError.unauthorized();
+            }
+        
+            req[requestKey] = session;
+            next();
+        };
+    }
 }

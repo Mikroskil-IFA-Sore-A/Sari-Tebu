@@ -61,12 +61,30 @@ export default class ClientError extends Error {
     }
 
     /**
+     * **410** (Gone)
+     * @param {string} message
+     * @returns {ClientError}
+     */
+    static gone(message = "Gone") {
+        return new ClientError(message, 410);
+    }
+
+    /**
      * **415** (Unsupported Media Type)
-     * @param {string}
+     * @param {string} message
      * @returns {ClientError}
      */
     static unsupportedMediaType(message = "Unsupported Media Type") {
         return new ClientError(message, 415);
+    }
+
+    /**
+     * **422** (Unprocessable)
+     * @param {string} message
+     * @returns {ClientError}
+     */
+    static unprocessable(message = "Unprocessable") {
+        return new ClientError(message, 422);
     }
 
     /**

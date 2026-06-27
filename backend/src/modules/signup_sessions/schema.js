@@ -5,5 +5,5 @@ export const createSignupSessionSchema = Joi.object({
 });
 
 export const verifyEmailAddressSchema = Joi.object({
-    code: Joi.string().length(8).required(),
+    code: Joi.string().length(8).pattern(/^\d+$/).required(),
 });

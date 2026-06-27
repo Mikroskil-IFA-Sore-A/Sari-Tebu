@@ -1,12 +1,8 @@
 import bcrypt from "bcrypt";
-import { nanoid, customAlphabet } from "nanoid";
+import { nanoid } from "nanoid";
 
 import { prisma } from "#/shared/database/index.js";
 import ClientError from "#/shared/exceptions/client_error.js";
-
-const generateEmailVerificationCode = () => {
-    return customAlphabet("ABCDEFGHJKLMNPQRSTUVWXYZ23456789", 8)();
-};
 
 const publicUserField = {
     id: true,

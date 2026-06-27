@@ -10,13 +10,20 @@ datasource db {
     provider = "mysql"
 }
 
+enum UserStatus {
+    PENDING
+    ACTIVE
+    ARCHIVED
+}
+
 model User {
     id                      String                  @id             
-    email_address           String                  @unique
+    email_address           String                  @unique             // ingat @index akan automatically buat index untuk kolom ini
     username                String              
     password_hash           Bytes                   @db.Blob
     created_at              DateTime                @default(now())
     updated_at              DateTime                @updatedAt
+    status                  UserStatus              @default(PENDING)
 
     auth_sessions           AuthSession[]
     password_reset_sessions PasswordResetSession[]
@@ -27,7 +34,7 @@ model User {
 }
 
 model AuthSession {
-    id                            String                       @id             
+    id                            Int                          @id             @default(autoincrement())
     user_id                       String                                       
     session_secret_hash           Bytes                        @db.Blob
     created_at                    DateTime                     @default(now())
@@ -42,7 +49,7 @@ model AuthSession {
 }
 
 model PasswordResetSession {
-    id                  String   @id      
+    id                  Int      @id       @default(autoincrement())
     user_id             String            
     session_secret_hash Bytes    @db.Blob
     email_code_hash     Bytes    @db.Blob
@@ -55,8 +62,8 @@ model PasswordResetSession {
 }
 
 model accountDeletionSession {
-    id                  String      @id      
-    auth_session_id     String                
+    id                  Int         @id       @default(autoincrement())
+    auth_session_id     Int                
     session_secret_hash Bytes       @db.Blob
     is_email_verified   Boolean
     created_at          DateTime    @default(now())
@@ -67,8 +74,8 @@ model accountDeletionSession {
 }
 
 model emailAddresssUpdateSession {
-    id                  String      @id      
-    auth_session_id     String               
+    id                  Int         @id      @default(autoincrement())
+    auth_session_id     Int               
     session_secret_hash Bytes       @db.Blob
     is_email_verified   Boolean
     new_email_address   String
@@ -81,8 +88,8 @@ model emailAddresssUpdateSession {
 }
 
 model passwordUpdateSession {
-    id                  String      @id      
-    auth_session_id     String                
+    id                  Int         @id      @default(autoincrement())
+    auth_session_id     Int                
     session_secret_hash Bytes       @db.Blob
     is_email_verified   Boolean
     created_at          DateTime    @default(now())
@@ -93,7 +100,7 @@ model passwordUpdateSession {
 }
 
 model SignupSession {
-    id                  String   @id      
+    id                  Int      @id       @default(autoincrement())
     session_secret_hash Bytes    @db.Blob
     email_address       String
     email_code_hash     String

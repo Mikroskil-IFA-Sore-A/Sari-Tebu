@@ -1,4 +1,4 @@
-import { SESv2Client, SendEmailCommand } from "@aws-sdk/client-sesv2";
+import { Resend } from "resend";
 
 // TODO(AELBERTH): Tolong refactor ini keluar dari client.js, karena ini melanggar
 //                 Single-Responsibility Principle.
@@ -6,40 +6,59 @@ const formatEmailCode = (code) => {
     return code.slice(0, 4) + "-" + code.slice(4, 8);
 };
 
-class SESClient {
-    constructor({ region, accessKeyId, secretAccessKey }) {
-        this.client = new SESv2Client({
-            region: region,
-            credentials: {
-                accessKeyId: accessKeyId,
-                secretAccessKey: secretAccessKey,
-            },
-        });
+// class SESClient {
+//     constructor({ region, accessKeyId, secretAccessKey }) {
+//         this.client = new SESv2Client({
+//             region: region,
+//             credentials: {
+//                 accessKeyId: accessKeyId,
+//                 secretAccessKey: secretAccessKey,
+//             },
+//         });
+//     }
+
+//     async sendEmail(source, dest, { subject, body }) {
+//         try {
+//             return await this.client.send(
+//                 new SendEmailCommand({
+//                     FromEmailAddress: source,
+//                     Destination: { ToAddresses: [dest] },
+//                     Content: {
+//                         Simple: {
+//                             Subject: {
+//                                 Data: subject,
+//                             },
+//                             Body: {
+//                                 Text: {
+//                                     Data: body,
+//                                 },
+//                             },
+//                         },
+//                     },
+//                 }),
+//             );
+//         } catch {}
+//     }
+// }
+
+class ResendClient {
+    constructor({ apiKey }) {
+        this.client = new Resend(apiKey);
     }
 
-    // TODO(AELBERTH): Untuk sementara error dibiarkan aja, nanti setelah implementasi log (e.g. tbl_sdklog)
+    // TODO(AELBERTH): Untuk sementara error dibiarkan aja, nanti setelah implementasi log (e.g. email_log)
     //                 write ke dalam log semua yang gagal tapi jangan block ataupun crash.
     async sendEmail(source, dest, { subject, body }) {
-        try {
-            return await this.client.send(
-                new SendEmailCommand({
-                    FromEmailAddress: this.address,
-                    Destination: { ToAddresses: [destination] },
-                    Content: {
-                        Simple: {
-                            Subject: {
-                                Data: subject,
-                            },
-                            Body: {
-                                Text: {
-                                    Data: body,
-                                },
-                            },
-                        },
-                    },
-                }),
-            );
-        } catch {}
+        const { error } = await this.client.emails.send({
+            from: source,
+            to: [dest],
+            subject: subject,
+            text: body
+        });
+
+        if (error) {
+            console.log(error);
+        }
     }
 }
 
@@ -56,17 +75,13 @@ ${body}`);
 
 export default class EmailClient {
     constructor({
+        enabled,
         sourceAddress,
-        awsEnabled,
-        awsRegion,
-        awsAccessKeyID,
-        awsSecretAccessKey,
+        apiKey
     } = {}) {
-        this.client = awsEnabled
-            ? new SESClient({
-                  region: awsRegion,
-                  accessKeyId: awsAccessKeyID,
-                  secretAccessKey: awsSecretAccessKey,
+        this.client = enabled
+            ? new ResendClient({
+                apiKey: apiKey
               })
             : new HostClient({});
         this.address = sourceAddress;
