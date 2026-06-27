@@ -1,13 +1,13 @@
-name: sari-tebu-production
+name: sari-tebu-development
 services:
     database:
         image: mysql:8.4
-        container_name: sari-tebu-database
+        container_name: mysql8.4
         restart: unless-stopped
         env_file:
-            - .env.prod
-        volumes:
-            - mysql_data:/var/lib/mysql
+            - .env
+        ports:
+            - "3306:3306"
         healthcheck:
             test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
             interval: 5s
@@ -15,29 +15,12 @@ services:
             retries: 10
             start_period: 30s
 
-    server:
-        build:
-            context: .
-            dockerfile: Dockerfile
+    adminer:
+        image: adminer
+        container_name: adminer
         restart: unless-stopped
-        env_file:
-            - .env.prod
-        expose:
-            - "${PORT:-8080}"
+        ports:
+            - "9000:8080"
         depends_on:
             database:
                 condition: service_healthy
-    
-    caddy:
-        image: caddy:alpine
-        container_name: sari-tebu-reverse-proxy
-        restart: unless-stopped
-        ports:
-            - "80:80"
-        volumes:
-            - ./Caddyfile:/etc/caddy/Caddyfile:ro
-        depends_on:
-            - server
-
-volumes:
-    mysql_data:

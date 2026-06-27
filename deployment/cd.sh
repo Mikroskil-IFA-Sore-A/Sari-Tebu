@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
-LOCK_FILE="/home/akunsialbert/Projects/Sari-Tebu/sari-tebu.lock"
-cd /home/akunsialbert/Projects/Sari-Tebu
-flock -n $LOCK_FILE /home/akunsialbert/Projects/Sari-Tebu/deployment/deploy-if-changed.sh >> /home/akunsialbert/Projects/Sari-Tebu/deployment.log 2>&1
+
+# Kenapa pakai lock?
+# 
+# Karena cron trigger tiap menit disaat dimana deployment butuh lebih dari semenit, maka cron trigger untuk kedua dan ketiga kalinya akan 
+# di-ignore dan akan di run pada menit berikutnya
+
+DEPLOYMENT_DIR="/home/akunsialbert/Projects/Sari-Tebu/deployment"
+LOCK_FILE="$DEPLOY_DIR/deployment.lock"
+LOG_FILE="$DEPLOY_DIR/deployment.log"
+cd $DEPLOYMENT_DIR
+flock -n $LOCK_FILE $DEPLOYMENT_DIR/deploy-if-changed.sh >> $LOG_FILE 2>&1

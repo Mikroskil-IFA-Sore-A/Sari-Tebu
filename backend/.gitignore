@@ -4,5 +4,3 @@ generated/
 .env
 .env.prod
 .env.*
-*.log
-*.lock
