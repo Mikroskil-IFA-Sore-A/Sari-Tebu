@@ -4,13 +4,13 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import authenticationRoutes from "#/modules/authentications/routes.js";
-import cartRoutes from "#/modules/carts/routes.js";
-import productRoutes from "#/modules/products/routes.js";
-import transactionRoutes from "#/modules/transactions/routes.js";
-import userRoutes from "#/modules/users/routes.js";
-import signUpRoutes from "#/modules/signup_sessions/routes.js";
-import requireErrorHandler from "#/shared/middlewares/error_handler.js";
+import authenticationRoutes from "./modules/auth_sessions/routes.js";
+import cartRoutes from "./modules/carts/routes.js";
+import productRoutes from "./modules/products/routes.js";
+import transactionRoutes from "./modules/transactions/routes.js";
+import userRoutes from "./modules/users/routes.js";
+import signUpRoutes from "./modules/signup_sessions/routes.js";
+import requireErrorHandler from "./shared/middlewares/error_handler.js";
 
 const app = express();
 

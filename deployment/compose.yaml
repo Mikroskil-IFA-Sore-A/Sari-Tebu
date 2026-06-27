@@ -25,7 +25,8 @@ services:
         expose:
             - "${PORT:-8080}"
         depends_on:
-            - database
+            database:
+                condition: service_healthy
 
     frontend:
         build:

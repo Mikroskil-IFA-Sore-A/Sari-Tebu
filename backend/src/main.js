@@ -1,10 +1,12 @@
 import "dotenv/config";
 import app from "./app.js";
+// import cleanupExpiredSessions from "./shared/lib/cleanup_expired_sessions.js";
 
 async function init() {
     const host = process.env.HOST;
     const port = process.env.PORT;
 
+    // cleanupExpiredSessions();
     app.listen(port, host, function () {
         console.log(
             [

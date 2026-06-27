@@ -10,20 +10,13 @@ datasource db {
     provider = "mysql"
 }
 
-enum UserStatus {
-    PENDING
-    ACTIVE
-    ARCHIVED
-}
-
 model User {
     id                      String                  @id             
-    email_address           String                  @unique             // ingat @index akan automatically buat index untuk kolom ini
+    email_address           String                  @unique         // ingat @index akan automatically buat index untuk kolom ini
     username                String              
     password_hash           Bytes                   @db.Blob
     created_at              DateTime                @default(now())
     updated_at              DateTime                @updatedAt
-    status                  UserStatus              @default(PENDING)
 
     auth_sessions           AuthSession[]
     password_reset_sessions PasswordResetSession[]
@@ -34,7 +27,7 @@ model User {
 }
 
 model AuthSession {
-    id                            Int                          @id             @default(autoincrement())
+    id                            String                       @id             
     user_id                       String                                       
     session_secret_hash           Bytes                        @db.Blob
     created_at                    DateTime                     @default(now())
@@ -49,12 +42,13 @@ model AuthSession {
 }
 
 model PasswordResetSession {
-    id                  Int      @id       @default(autoincrement())
+    id                  String   @id      
     user_id             String            
     session_secret_hash Bytes    @db.Blob
     email_code_hash     Bytes    @db.Blob
     is_email_verified   Boolean
     created_at          DateTime @default(now())
+    expires_at          DateTime
     user                User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
 
     @@map("password_reset_sessions")
@@ -62,11 +56,12 @@ model PasswordResetSession {
 }
 
 model accountDeletionSession {
-    id                  Int         @id       @default(autoincrement())
-    auth_session_id     Int                
+    id                  String      @id      
+    auth_session_id     String                
     session_secret_hash Bytes       @db.Blob
     is_email_verified   Boolean
     created_at          DateTime    @default(now())
+    expires_at          DateTime
     authSession         AuthSession @relation(fields: [auth_session_id], references: [id], onDelete: Cascade)
 
     @@map("account_deletion_sessions")
@@ -74,13 +69,14 @@ model accountDeletionSession {
 }
 
 model emailAddresssUpdateSession {
-    id                  Int         @id      @default(autoincrement())
-    auth_session_id     Int               
+    id                  String      @id      
+    auth_session_id     String               
     session_secret_hash Bytes       @db.Blob
     is_email_verified   Boolean
     new_email_address   String
     email_code_hash     Bytes
     created_at          DateTime    @default(now())
+    expires_at          DateTime
     authSession         AuthSession @relation(fields: [auth_session_id], references: [id], onDelete: Cascade)
 
     @@map("email_address_update_sessions")
@@ -88,11 +84,12 @@ model emailAddresssUpdateSession {
 }
 
 model passwordUpdateSession {
-    id                  Int         @id      @default(autoincrement())
-    auth_session_id     Int                
+    id                  String      @id      
+    auth_session_id     String                
     session_secret_hash Bytes       @db.Blob
     is_email_verified   Boolean
     created_at          DateTime    @default(now())
+    expires_at          DateTime
     authSession         AuthSession @relation(fields: [auth_session_id], references: [id], onDelete: Cascade)
 
     @@map("password_update_sessions")
@@ -100,12 +97,13 @@ model passwordUpdateSession {
 }
 
 model SignupSession {
-    id                  Int      @id       @default(autoincrement())
+    id                  String   @id      
     session_secret_hash Bytes    @db.Blob
     email_address       String
     email_code_hash     String
     is_email_verified   Boolean
     created_at          DateTime @default(now())
+    expires_at          DateTime
 
     @@map("signup_sessions")
 }

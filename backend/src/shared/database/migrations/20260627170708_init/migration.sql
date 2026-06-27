@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE `users` (
-    `id` VARCHAR(32) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
     `email_address` VARCHAR(191) NOT NULL,
     `username` VARCHAR(191) NOT NULL,
     `password_hash` BLOB NOT NULL,
@@ -13,9 +13,9 @@ CREATE TABLE `users` (
 
 -- CreateTable
 CREATE TABLE `auth_sessions` (
-    `id` VARCHAR(32) NOT NULL,
-    `user_id` VARCHAR(32) NOT NULL,
-    `session_secret` BLOB NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
+    `session_secret_hash` BLOB NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `expires_at` DATETIME(3) NOT NULL,
 
@@ -25,9 +25,9 @@ CREATE TABLE `auth_sessions` (
 
 -- CreateTable
 CREATE TABLE `password_reset_sessions` (
-    `id` VARCHAR(32) NOT NULL,
-    `user_id` VARCHAR(32) NOT NULL,
-    `session_secret` BLOB NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
+    `session_secret_hash` BLOB NOT NULL,
     `email_code_hash` BLOB NOT NULL,
     `is_email_verified` BOOLEAN NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -38,9 +38,9 @@ CREATE TABLE `password_reset_sessions` (
 
 -- CreateTable
 CREATE TABLE `account_deletion_sessions` (
-    `id` VARCHAR(32) NOT NULL,
-    `auth_session_id` VARCHAR(32) NOT NULL,
-    `session_secret` BLOB NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `auth_session_id` VARCHAR(191) NOT NULL,
+    `session_secret_hash` BLOB NOT NULL,
     `is_email_verified` BOOLEAN NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -50,9 +50,9 @@ CREATE TABLE `account_deletion_sessions` (
 
 -- CreateTable
 CREATE TABLE `email_address_update_sessions` (
-    `id` VARCHAR(32) NOT NULL,
-    `auth_session_id` VARCHAR(32) NOT NULL,
-    `session_secret` BLOB NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `auth_session_id` VARCHAR(191) NOT NULL,
+    `session_secret_hash` BLOB NOT NULL,
     `is_email_verified` BOOLEAN NOT NULL,
     `new_email_address` VARCHAR(191) NOT NULL,
     `email_code_hash` LONGBLOB NOT NULL,
@@ -64,9 +64,9 @@ CREATE TABLE `email_address_update_sessions` (
 
 -- CreateTable
 CREATE TABLE `password_update_sessions` (
-    `id` VARCHAR(32) NOT NULL,
-    `auth_session_id` VARCHAR(32) NOT NULL,
-    `session_secret` BLOB NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `auth_session_id` VARCHAR(191) NOT NULL,
+    `session_secret_hash` BLOB NOT NULL,
     `is_email_verified` BOOLEAN NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -76,8 +76,8 @@ CREATE TABLE `password_update_sessions` (
 
 -- CreateTable
 CREATE TABLE `signup_sessions` (
-    `id` VARCHAR(32) NOT NULL,
-    `session_secret` BLOB NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `session_secret_hash` BLOB NOT NULL,
     `email_address` VARCHAR(191) NOT NULL,
     `email_code_hash` VARCHAR(191) NOT NULL,
     `is_email_verified` BOOLEAN NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `signup_sessions` (
 
 -- CreateTable
 CREATE TABLE `products` (
-    `id` VARCHAR(32) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `price` INTEGER NOT NULL,
     `stock` INTEGER NOT NULL,
@@ -101,8 +101,8 @@ CREATE TABLE `products` (
 
 -- CreateTable
 CREATE TABLE `carts` (
-    `id` VARCHAR(32) NOT NULL,
-    `user_id` VARCHAR(32) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
 
@@ -112,8 +112,8 @@ CREATE TABLE `carts` (
 
 -- CreateTable
 CREATE TABLE `cart_items` (
-    `cart_id` VARCHAR(32) NOT NULL,
-    `product_id` VARCHAR(32) NOT NULL,
+    `cart_id` VARCHAR(191) NOT NULL,
+    `product_id` VARCHAR(191) NOT NULL,
     `quantity` INTEGER NOT NULL,
 
     PRIMARY KEY (`cart_id`, `product_id`)
@@ -121,8 +121,8 @@ CREATE TABLE `cart_items` (
 
 -- CreateTable
 CREATE TABLE `transactions` (
-    `id` VARCHAR(32) NOT NULL,
-    `user_id` VARCHAR(32) NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
+    `user_id` VARCHAR(191) NOT NULL,
     `total` INTEGER NOT NULL,
     `created_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NOT NULL,
@@ -133,8 +133,8 @@ CREATE TABLE `transactions` (
 
 -- CreateTable
 CREATE TABLE `transaction_items` (
-    `transaction_id` VARCHAR(32) NOT NULL,
-    `product_id` VARCHAR(32) NOT NULL,
+    `transaction_id` VARCHAR(191) NOT NULL,
+    `product_id` VARCHAR(191) NOT NULL,
     `quantity` INTEGER NOT NULL,
     `price_at_time` INTEGER NOT NULL,
 
