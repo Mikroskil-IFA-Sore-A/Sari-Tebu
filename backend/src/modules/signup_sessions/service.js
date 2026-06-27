@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 
 import { prisma } from "#/shared/database/index.js";
-import ClientError from "#/shared/exceptions/client_error";
+import ClientError from "#/shared/exceptions/client_error.js";
 import {
     generateSessionSecret,
     hashSessionSecret,
