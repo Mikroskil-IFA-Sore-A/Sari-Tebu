@@ -1,10 +1,10 @@
 import { timingSafeEqual } from "node:crypto";
 
-import ClientError from "#/shared/exceptions/client_error.js";
+import ClientError from "../../shared/exceptions/client_error.js";
 import {
     parseSessionToken,
     hashSessionSecret,
-} from "#/shared/lib/session_manager.js";
+} from "../../shared/lib/session_manager.js";
 
 /**
  * Session middleware factory, Gunakan untuk buat sessions middleware e.g. requireSignupSession, requireAuthSession, dll.
@@ -33,14 +33,20 @@ export default function requireSession({
     return function () {  
         return async function (req, res, next) {
             const token = req.cookies[cookieName];
-            if (!token) throw ClientError.unauthorized();
+            if (!token) throw ClientError.unauthorized("Invalid cookie");
         
             const { sessionId, secret } = parseSessionToken(token);
         
             const session = await findSessionFn(sessionId);
-            if (!session) throw ClientError.unauthorized();
+            if (!session) {
+                throw ClientError.unauthorized("Session invalid");
+            }
+
+            if (!session) {
+                throw ClientError.unauthorized("Session expired");
+            }
         
-            if (!timingSafeEqual(hashSessionSecret(secret), session.secret_hash)) {
+            if (!timingSafeEqual(hashSessionSecret(secret), session.session_secret_hash)) {
                 throw ClientError.unauthorized();
             }
         

@@ -3,13 +3,13 @@ import { randomInt } from "node:crypto";
 import bcrypt from "bcrypt";
 import { nanoid } from "nanoid";
 
-import { prisma } from "#/shared/database/index.js";
-import ClientError from "#/shared/exceptions/client_error.js";
+import { prisma } from "../../shared/database/index.js";
+import ClientError from "../../shared/exceptions/client_error.js";
 import {
     generateSessionSecret,
     hashSessionSecret,
     createSessionToken,
-} from "#/shared/lib/session_manager.js";
+} from "../../shared/lib/session_manager.js";
 
 export async function createSignupSession(emailAddress) {
     const exists = await prisma.user.findUnique({
@@ -32,7 +32,7 @@ export async function createSignupSession(emailAddress) {
         .toString()
         .padStart(8, "0");
 
-    const singupSession = await prisma.signupSession.create({
+    const signupSession = await prisma.signupSession.create({
         data: {
             id: nanoid(),
             email_address: emailAddress,
@@ -42,18 +42,24 @@ export async function createSignupSession(emailAddress) {
         },
     });
 
-    const token = createSessionToken(singupSession.id, secret);
+    const token = createSessionToken(signupSession.id, secret);
     return { token, verificationCode };
 }
 
+export async function findSignupSession(id) {
+    return prisma.signupSession.findUnique({
+        where: { id: id }
+    });
+}
+
 export async function verifyEmailAddress(signupSession, code) {
-    if (bcrypt(code) !== signupSession.email_code_hash) {
+    if (!(await bcrypt.compare(code, signupSession.email_code_hash))) {
         throw ClientError.unprocessable("Invalid verification code.");
     }
 
-    await prisma.signup_session.update({
+    await prisma.signupSession.update({
         where: { id: signupSession.id },
-        data: { email_verified: true },
+        data: { is_email_verified: true },
     });
 }
 
@@ -74,7 +80,7 @@ export async function refreshVerificationCode(id) {
 
 export async function deleteSignupSession(id) {
     try {
-        await prisma.singupSession.delete({
+        await prisma.signupSession.delete({
             where: { id: id },
         });
     } catch (err) {

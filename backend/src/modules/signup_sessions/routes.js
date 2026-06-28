@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import requireRateLimit from "#/shared/middlewares/rate_limit.js";
-import requireSession from "#/shared/middlewares/session.js";
-import requireValidation from "#/shared/middlewares/validation.js";
+import requireRateLimit from "../../shared/middlewares/rate_limit.js";
+import requireValidation from "../../shared/middlewares/validation.js";
+import requireSignupSession from "../../shared/middlewares/signup_session.js";
 
 import {
     createSignupSession,
@@ -14,14 +14,6 @@ import {
     createSignupSessionSchema,
     verifyEmailAddressSchema,
 } from "./schema.js";
-
-const requireSignupSession = requireSession({
-    cookieName: "signup_session_token",
-    requestKey: "signupSession",
-    findSessionFn: (id) => {
-        prisma.signup_session.findUnique({ where: { id } });
-    },
-});
 
 const routes = Router();
 
@@ -58,7 +50,7 @@ routes.post("/resend-verification-code", [
 ]);
 
 routes.delete("/", [
-    requireValidation("body", verifyEmailAddressSchema),
+    requireSignupSession(),
     cancelSignup,
 ]);
 

@@ -1,4 +1,4 @@
-import mail from "#/shared/email/index.js";
+import mail from "../../shared/email/index.js";
 
 import * as SignupSessionService from "./service.js";
 
@@ -24,6 +24,8 @@ export async function createSignupSession(req, res) {
 
 export async function verifyEmailAddress(req, res) {
     const { code } = req.validatedBody;
+    console.log(`session: ${req.signupSession}`);
+    console.log(`code: ${code}`);
 
     await SignupSessionService.verifyEmailAddress(req.signupSession, code);
     res.status(200).json({
@@ -33,7 +35,7 @@ export async function verifyEmailAddress(req, res) {
 }
 
 export async function resendVerificationCode(req, res) {
-    const verificationCode = await refreshVerificationCode(
+    const verificationCode = await SignupSessionService.refreshVerificationCode(
         req.signupSession.id,
     );
 
